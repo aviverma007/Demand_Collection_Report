@@ -1,0 +1,141 @@
+{
+  "milestones": [
+    {
+      "name": " Within 90 days of Allotment or On ...",
+      "demand": 6107957850.0,
+      "collected": 3818631349.18,
+      "outstanding": 2289326500.82,
+      "rate": 62.52
+    },
+    {
+      "name": " Within 13 months from Allotment Or...",
+      "demand": 4205384848.0,
+      "collected": 2964848310.33,
+      "outstanding": 1240536537.67,
+      "rate": 70.5
+    },
+    {
+      "name": "On or Before 13th Nov 2024",
+      "demand": 2384879463.0,
+      "collected": 1860127439.27,
+      "outstanding": 524752023.73,
+      "rate": 78.0
+    },
+    {
+      "name": "On or Before 12th Nov 2024",
+      "demand": 1187571600.0,
+      "collected": 896437751.1,
+      "outstanding": 291133848.9,
+      "rate": 75.48
+    },
+    {
+      "name": " On or Before 13th Nov 2024",
+      "demand": 542557987.0,
+      "collected": 391084624.84,
+      "outstanding": 151473362.16,
+      "rate": 72.08
+    },
+    {
+      "name": "On Booking",
+      "demand": 151140726.0,
+      "collected": 135781694.42,
+      "outstanding": 15359031.58,
+      "rate": 89.84
+    },
+    {
+      "name": " On or Before 14th Aug 2025 (On Exe...",
+      "demand": 47068823.0,
+      "collected": 11437795.0,
+      "outstanding": 35631028.0,
+      "rate": 24.3
+    },
+    {
+      "name": " On or Before 14th Aug 2025 (On Exe...",
+      "demand": 32633387.0,
+      "collected": 3807806.0,
+      "outstanding": 28825581.0,
+      "rate": 11.67
+    },
+    {
+      "name": " On or Before 16th Aug 2025 (On Exe...",
+      "demand": 26703859.0,
+      "collected": 14598617.73,
+      "outstanding": 12105241.27,
+      "rate": 54.67
+    },
+    {
+      "name": " On or Before 15th Aug 2025 (On Exe...",
+      "demand": 24995829.0,
+      "collected": 14984663.0,
+      "outstanding": 10011166.0,
+      "rate": 59.95
+    },
+    {
+      "name": " On or before 26-01-2025 or On Star...",
+      "demand": 23531755.0,
+      "collected": 16285149.0,
+      "outstanding": 7246606.0,
+      "rate": 69.2
+    },
+    {
+      "name": "On or Before 15th June 2025",
+      "demand": 20485736.0,
+      "collected": 8177992.0,
+      "outstanding": 12307744.0,
+      "rate": 39.92
+    }
+  ],
+  "towers": [
+    {
+      "tower": "TF",
+      "demand": 3024697300.0,
+      "collected": 2045341700.89,
+      "outstanding": 979355599.11,
+      "rate": 67.62
+    },
+    {
+      "tower": "TB",
+      "demand": 2455557762.0,
+      "collected": 1697831364.88,
+      "outstanding": 757726397.12,
+      "rate": 69.14
+    },
+    {
+      "tower": "TA",
+      "demand": 2806774526.0,
+      "collected": 1863817439.02,
+      "outstanding": 942957086.98,
+      "rate": 66.4
+    },
+    {
+      "tower": "TC",
+      "demand": 2360103572.0,
+      "collected": 1571945221.57,
+      "outstanding": 788158350.43,
+      "rate": 66.6
+    },
+    {
+      "tower": "TD",
+      "demand": 2562263762.0,
+      "collected": 1833759239.31,
+      "outstanding": 728504522.69,
+      "rate": 71.57
+    },
+    {
+      "tower": "TE",
+      "demand": 2534037841.0,
+      "collected": 1806336075.55,
+      "outstanding": 727701765.45,
+      "rate": 71.28
+    }
+  ],
+  "summary": {
+    "total_demand": 15743434763.0,
+    "total_collected": 10819031041.22,
+    "total_outstanding": 4924403721.78,
+    "total_units": 11157,
+    "total_customers": 857,
+    "total_towers": 6,
+    "collection_rate": 68.72
+  }
+}
