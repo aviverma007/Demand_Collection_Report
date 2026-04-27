@@ -1,348 +1,288 @@
-import { useState, useEffect, useMemo } from 'react';
-import * as XLSX from 'xlsx';
-import {
-  BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, AreaChart, Area,
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
-} from 'recharts';
+import React, { useState, useMemo } from 'react';
+import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ScatterChart, Scatter } from 'recharts';
+import { TrendingUp, BarChart3, Activity, DollarSign, Calendar } from 'lucide-react';
 import './App.css';
+import demandData from './data/demandCollectionData.json';
 
-export default function App() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+const App = () => {
+  const [selectedTower, setSelectedTower] = useState('ALL');
+  const [selectedMilestoneGroup, setSelectedMilestoneGroup] = useState('TOP');
 
-  useEffect(() => {
-    fetch('/dapp_skyarc.XLSX')
-      .then(res => res.arrayBuffer())
-      .then(buffer => {
-        const wb = XLSX.read(buffer, { type: 'array' });
-        const ws = wb.Sheets[wb.SheetNames[0]];
-        const jsonData = XLSX.utils.sheet_to_json(ws);
-        setData(jsonData);
-        setLoading(false);
-      });
-  }, []);
+  // Format numbers
+  const fmt = (n) => (n >= 1e8 ? (n / 1e7).toFixed(2) + ' Cr' : n >= 1e5 ? (n / 1e5).toFixed(2) + ' L' : (n / 1000).toFixed(1) + 'K');
+  const fmtFull = (n) => n.toLocaleString('en-IN', { maximumFractionDigits: 0 });
 
-  // KPI CALCULATIONS
+  // Process data based on filters
+  const processedData = useMemo(() => {
+    let milestones = { ...demandData.milestones };
+    
+    // Get milestone array
+    const milestoneSummary = Object.entries(milestones)
+      .map(([name, data]) => ({ name, ...data }))
+      .sort((a, b) => b.total_demand - a.total_demand);
+
+    const topMilestones = milestoneSummary.slice(0, 10);
+    const displayMilestones = selectedMilestoneGroup === 'TOP' ? topMilestones : milestoneSummary;
+
+    return {
+      milestones: displayMilestones,
+      towers: Object.entries(demandData.towers).map(([tower, data]) => ({ tower, ...data })),
+      summary: {
+        total_demand: demandData.total_demand,
+        total_collected: demandData.total_collected,
+        total_outstanding: demandData.total_outstanding,
+      }
+    };
+  }, [selectedMilestoneGroup]);
+
+  // Calculate KPIs
   const kpis = useMemo(() => {
-    if (!data.length) return {};
-
-    const totalDemand = data.reduce((sum, row) => sum + (row['Total Demand With Tax'] || 0), 0);
-    const totalCollected = data.reduce((sum, row) => sum + (row['Received Amount'] || 0), 0);
-    const totalOutstanding = totalDemand - totalCollected;
-    const collectionRate = totalDemand ? ((totalCollected / totalDemand) * 100).toFixed(1) : 0;
+    const totalDemand = processedData.summary.total_demand;
+    const totalCollected = processedData.summary.total_collected;
+    const outstanding = processedData.summary.total_outstanding;
+    const collectionRate = ((totalCollected / totalDemand) * 100).toFixed(2);
 
     return {
       totalDemand,
       totalCollected,
-      totalOutstanding,
-      collectionRate,
-      totalBookings: new Set(data.map(r => r['Sale order No'])).size,
-      totalCustomers: new Set(data.map(r => r['Customer Code (Payer)'])).size,
+      outstanding,
+      collectionRate
     };
-  }, [data]);
+  }, [processedData]);
 
-  // MILESTONE ANALYSIS
-  const milestoneData = useMemo(() => {
-    if (!data.length) return [];
+  // Chart data - Milestone-wise Demand vs Collection
+  const milestoneChartData = processedData.milestones.map(m => ({
+    name: m.name.substring(0, 25) + (m.name.length > 25 ? '...' : ''),
+    demand: m.total_demand,
+    collected: m.total_collected,
+    outstanding: m.outstanding,
+    rate: m.collection_rate
+  }));
 
-    const grouped = {};
-    data.forEach(row => {
-      const milestone = row['Milestone'] || 'Unspecified';
-      if (!grouped[milestone]) {
-        grouped[milestone] = { milestone, demand: 0, collected: 0, outstanding: 0, count: 0 };
-      }
-      grouped[milestone].demand += row['Total Demand With Tax'] || 0;
-      grouped[milestone].collected += row['Received Amount'] || 0;
-      grouped[milestone].outstanding += (row['Outstanding Amount'] || 0);
-      grouped[milestone].count += 1;
-    });
+  // Tower-wise summary
+  const towerChartData = processedData.towers.map(t => ({
+    tower: t.tower,
+    demand: t.total_demand,
+    collected: t.total_collected,
+    outstanding: t.outstanding,
+    rate: t.collection_rate
+  }));
 
-    return Object.values(grouped)
-      .sort((a, b) => b.demand - a.demand)
-      .map(m => ({
-        ...m,
-        collectionRate: m.demand ? ((m.collected / m.demand) * 100).toFixed(1) : 0,
-      }));
-  }, [data]);
+  // Collection rate distribution
+  const rateDistribution = [
+    { range: '0-25%', count: processedData.milestones.filter(m => m.collection_rate >= 0 && m.collection_rate < 25).length, value: 10 },
+    { range: '25-50%', count: processedData.milestones.filter(m => m.collection_rate >= 25 && m.collection_rate < 50).length, value: 25 },
+    { range: '50-75%', count: processedData.milestones.filter(m => m.collection_rate >= 50 && m.collection_rate < 75).length, value: 50 },
+    { range: '75-100%', count: processedData.milestones.filter(m => m.collection_rate >= 75 && m.collection_rate <= 100).length, value: 75 },
+  ];
 
-  // TOWER-WISE ANALYSIS
-  const towerData = useMemo(() => {
-    if (!data.length) return [];
-
-    const grouped = {};
-    data.forEach(row => {
-      const tower = row['Tower'] || 'Unknown';
-      if (!grouped[tower]) {
-        grouped[tower] = { tower, demand: 0, collected: 0, units: 0 };
-      }
-      grouped[tower].demand += row['Total Demand With Tax'] || 0;
-      grouped[tower].collected += row['Received Amount'] || 0;
-      grouped[tower].units += 1;
-    });
-
-    return Object.values(grouped).sort((a, b) => b.demand - a.demand);
-  }, [data]);
-
-  // MONTHLY TREND
-  const monthlyTrend = useMemo(() => {
-    if (!data.length) return [];
-
-    const monthMap = {};
-    data.forEach(row => {
-      const date = row['SAP Date'] || row['Bill creation date'];
-      if (!date) return;
-
-      let month;
-      if (date instanceof Date) {
-        month = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-      } else {
-        return;
-      }
-
-      if (!monthMap[month]) {
-        monthMap[month] = { month, demand: 0, collected: 0, bookings: 0 };
-      }
-      monthMap[month].demand += row['Total Demand With Tax'] || 0;
-      monthMap[month].collected += row['Received Amount'] || 0;
-      monthMap[month].bookings += 1;
-    });
-
-    return Object.values(monthMap).sort((a, b) => a.month.localeCompare(b.month));
-  }, [data]);
-
-  // PAYMENT PLAN ANALYSIS
-  const paymentPlanData = useMemo(() => {
-    if (!data.length) return [];
-
-    const grouped = {};
-    data.forEach(row => {
-      const plan = row['Payment Plan Name'] || 'Unknown';
-      if (!grouped[plan]) {
-        grouped[plan] = { plan, demand: 0, collected: 0, units: 0 };
-      }
-      grouped[plan].demand += row['Total Demand With Tax'] || 0;
-      grouped[plan].collected += row['Received Amount'] || 0;
-      grouped[plan].units += 1;
-    });
-
-    return Object.values(grouped).sort((a, b) => b.demand - a.demand);
-  }, [data]);
-
-  // COLLECTION EFFICIENCY
-  const collectionEfficiency = useMemo(() => {
-    if (!data.length) return [];
-
-    const buckets = {
-      '0-30%': { range: '0-30%', count: 0, demand: 0 },
-      '30-50%': { range: '30-50%', count: 0, demand: 0 },
-      '50-70%': { range: '50-70%', count: 0, demand: 0 },
-      '70-90%': { range: '70-90%', count: 0, demand: 0 },
-      '90-100%': { range: '90-100%', count: 0, demand: 0 },
-    };
-
-    const grouped = {};
-    data.forEach(row => {
-      const key = row['Sale order No'];
-      if (!grouped[key]) {
-        grouped[key] = { totalDemand: 0, totalCollected: 0 };
-      }
-      grouped[key].totalDemand += row['Total Demand With Tax'] || 0;
-      grouped[key].totalCollected += row['Received Amount'] || 0;
-    });
-
-    Object.values(grouped).forEach(item => {
-      const rate = item.totalDemand ? (item.totalCollected / item.totalDemand) * 100 : 0;
-      let bucket;
-      if (rate < 30) bucket = '0-30%';
-      else if (rate < 50) bucket = '30-50%';
-      else if (rate < 70) bucket = '50-70%';
-      else if (rate < 90) bucket = '70-90%';
-      else bucket = '90-100%';
-
-      buckets[bucket].count += 1;
-      buckets[bucket].demand += item.totalDemand;
-    });
-
-    return Object.values(buckets);
-  }, [data]);
-
-  // TOP CUSTOMERS
-  const topCustomers = useMemo(() => {
-    if (!data.length) return [];
-
-    const grouped = {};
-    data.forEach(row => {
-      const customer = row['Customer Name (Payer)'] || 'Unknown';
-      if (!grouped[customer]) {
-        grouped[customer] = { customer, demand: 0, collected: 0, units: 0 };
-      }
-      grouped[customer].demand += row['Total Demand With Tax'] || 0;
-      grouped[customer].collected += row['Received Amount'] || 0;
-      grouped[customer].units += 1;
-    });
-
-    return Object.values(grouped)
-      .sort((a, b) => b.demand - a.demand)
-      .slice(0, 10);
-  }, [data]);
-
-  const fmt = (num) => {
-    if (num >= 1e7) return (num / 1e7).toFixed(1) + 'Cr';
-    if (num >= 1e5) return (num / 1e5).toFixed(1) + 'L';
-    if (num >= 1e3) return (num / 1e3).toFixed(0) + 'K';
-    return num?.toFixed(0) || 0;
-  };
-
-  if (loading) {
-    return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>Loading...</div>;
-  }
+  const COLORS = ['#1e40af', '#ea580c', '#059669', '#7c3aed', '#db2777', '#d97706'];
 
   return (
-    <div style={{ background: '#f5f7fa', minHeight: '100vh', padding: '20px' }}>
-      <h1 style={{ fontSize: 32, fontWeight: 700, color: '#1e3a5f', marginBottom: 10 }}>Demand & Collection Dashboard</h1>
-      <p style={{ fontSize: 14, color: '#666', marginBottom: 30 }}>Smartworld Sky Arc - Real Estate Project</p>
+    <div className="app">
+      {/* Header */}
+      <header className="header">
+        <div className="header-content">
+          <div className="logo">
+            <DollarSign size={28} />
+            <h1>Demand & Collection Report</h1>
+            <p>Smartworld Sky Arc - Milestone-wise Analysis</p>
+          </div>
+        </div>
+      </header>
+
+      {/* Controls */}
+      <div className="controls">
+        <select value={selectedMilestoneGroup} onChange={(e) => setSelectedMilestoneGroup(e.target.value)} className="select">
+          <option value="TOP">Top 10 Milestones</option>
+          <option value="ALL">All Milestones</option>
+        </select>
+      </div>
 
       {/* KPI Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 16, marginBottom: 30 }}>
-        {[
-          { label: 'Total Demand', value: fmt(kpis.totalDemand), icon: '₹' },
-          { label: 'Collected', value: fmt(kpis.totalCollected), icon: '✓' },
-          { label: 'Outstanding', value: fmt(kpis.totalOutstanding), icon: '⏳' },
-          { label: 'Collection %', value: `${kpis.collectionRate}%`, icon: '%' },
-          { label: 'Bookings', value: kpis.totalBookings, icon: '📋' },
-          { label: 'Customers', value: kpis.totalCustomers, icon: '👥' },
-        ].map((kpi, idx) => (
-          <div key={idx} style={{ background: '#fff', padding: '20px', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-            <div style={{ fontSize: 12, color: '#999', fontWeight: 600, marginBottom: 8 }}>{kpi.label}</div>
-            <div style={{ fontSize: 22, fontWeight: 700, color: '#1e3a5f' }}>{kpi.icon} {kpi.value}</div>
+      <section className="kpi-section">
+        <div className="kpi-card">
+          <div className="kpi-icon" style={{ backgroundColor: '#3b82f6' }}>
+            <BarChart3 size={24} color="#fff" />
           </div>
-        ))}
-      </div>
+          <div className="kpi-content">
+            <p className="kpi-label">Total Demand</p>
+            <h3 className="kpi-value">₹ {fmt(kpis.totalDemand)}</h3>
+            <span className="kpi-full">{fmtFull(kpis.totalDemand)}</span>
+          </div>
+        </div>
 
-      {/* Charts */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 30 }}>
-        <div style={{ background: '#fff', padding: 20, borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, color: '#1e3a5f' }}>Demand by Milestone</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={milestoneData.slice(0, 8)}>
+        <div className="kpi-card">
+          <div className="kpi-icon" style={{ backgroundColor: '#10b981' }}>
+            <Activity size={24} color="#fff" />
+          </div>
+          <div className="kpi-content">
+            <p className="kpi-label">Total Collected</p>
+            <h3 className="kpi-value">₹ {fmt(kpis.totalCollected)}</h3>
+            <span className="kpi-full">{fmtFull(kpis.totalCollected)}</span>
+          </div>
+        </div>
+
+        <div className="kpi-card">
+          <div className="kpi-icon" style={{ backgroundColor: '#f59e0b' }}>
+            <Calendar size={24} color="#fff" />
+          </div>
+          <div className="kpi-content">
+            <p className="kpi-label">Outstanding</p>
+            <h3 className="kpi-value">₹ {fmt(kpis.outstanding)}</h3>
+            <span className="kpi-full">{fmtFull(kpis.outstanding)}</span>
+          </div>
+        </div>
+
+        <div className="kpi-card">
+          <div className="kpi-icon" style={{ backgroundColor: '#8b5cf6' }}>
+            <TrendingUp size={24} color="#fff" />
+          </div>
+          <div className="kpi-content">
+            <p className="kpi-label">Collection Rate</p>
+            <h3 className="kpi-value">{kpis.collectionRate}%</h3>
+            <span className="kpi-full">of total demand</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Charts Section */}
+      <section className="charts-section">
+        
+        {/* Milestone-wise Demand vs Collection */}
+        <div className="chart-card">
+          <h2 className="chart-title">Milestone-wise Demand vs Collection</h2>
+          <ResponsiveContainer width="100%" height={400}>
+            <BarChart data={milestoneChartData} margin={{ top: 20, right: 30, left: 20, bottom: 100 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="milestone" angle={-45} textAnchor="end" height={80} fontSize={10} />
-              <YAxis />
+              <XAxis dataKey="name" angle={-45} textAnchor="end" height={120} interval={0} tick={{ fontSize: 11 }} />
+              <YAxis label={{ value: 'Amount (₹)', angle: -90, position: 'insideLeft' }} />
               <Tooltip formatter={(v) => fmt(v)} />
-              <Bar dataKey="demand" fill="#1e3a5f" />
-              <Bar dataKey="collected" fill="#4caf50" />
+              <Legend />
+              <Bar dataKey="demand" fill="#3b82f6" name="Demand" />
+              <Bar dataKey="collected" fill="#10b981" name="Collected" />
+              <Bar dataKey="outstanding" fill="#ef4444" name="Outstanding" />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
-        <div style={{ background: '#fff', padding: 20, borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, color: '#1e3a5f' }}>Collection Rate Distribution</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={collectionEfficiency}>
+        {/* Tower-wise Summary */}
+        <div className="chart-card">
+          <h2 className="chart-title">Tower-wise Demand & Collection</h2>
+          <ResponsiveContainer width="100%" height={350}>
+            <BarChart data={towerChartData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="range" />
-              <YAxis />
+              <XAxis dataKey="tower" />
+              <YAxis label={{ value: 'Amount (₹)', angle: -90, position: 'insideLeft' }} />
+              <Tooltip formatter={(v) => fmt(v)} />
+              <Legend />
+              <Bar dataKey="demand" fill="#3b82f6" name="Demand" />
+              <Bar dataKey="collected" fill="#10b981" name="Collected" />
+              <Bar dataKey="outstanding" fill="#ef4444" name="Outstanding" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Collection Rate Distribution */}
+        <div className="chart-card">
+          <h2 className="chart-title">Collection Rate Distribution</h2>
+          <ResponsiveContainer width="100%" height={350}>
+            <PieChart>
+              <Pie data={rateDistribution} cx="50%" cy="50%" labelLine={false} label={({ range, count }) => `${range} (${count})`} outerRadius={100} fill="#8884d8" dataKey="count">
+                {COLORS.map((color, index) => (
+                  <Cell key={`cell-${index}`} fill={color} />
+                ))}
+              </Pie>
               <Tooltip />
-              <Bar dataKey="count" fill="#ff9800" />
-            </BarChart>
+            </PieChart>
           </ResponsiveContainer>
         </div>
-      </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 30 }}>
-        <div style={{ background: '#fff', padding: 20, borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, color: '#1e3a5f' }}>Monthly Trend</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={monthlyTrend}>
+        {/* Collection Rate Trend */}
+        <div className="chart-card">
+          <h2 className="chart-title">Top Milestones Collection Rate</h2>
+          <ResponsiveContainer width="100%" height={350}>
+            <LineChart data={processedData.milestones.slice(0, 10)} margin={{ top: 5, right: 30, left: 0, bottom: 100 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip formatter={(v) => fmt(v)} />
-              <Line type="monotone" dataKey="demand" stroke="#1e3a5f" />
-              <Line type="monotone" dataKey="collected" stroke="#4caf50" />
+              <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} interval={0} tick={{ fontSize: 10 }} />
+              <YAxis label={{ value: 'Collection Rate (%)', angle: -90, position: 'insideLeft' }} domain={[0, 105]} />
+              <Tooltip formatter={(v) => v.toFixed(2) + '%'} />
+              <Line type="monotone" dataKey="collection_rate" stroke="#8b5cf6" dot={{ fill: '#8b5cf6', r: 5 }} activeDot={{ r: 8 }} name="Collection Rate" />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
-        <div style={{ background: '#fff', padding: 20, borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, color: '#1e3a5f' }}>Demand by Tower</h3>
-          <ResponsiveContainer width="100%" height={300}>
+        {/* Outstanding Amount Distribution */}
+        <div className="chart-card">
+          <h2 className="chart-title">Outstanding by Tower</h2>
+          <ResponsiveContainer width="100%" height={350}>
             <PieChart>
-              <Pie data={towerData.slice(0, 5)} cx="50%" cy="50%" outerRadius={100} fill="#1e3a5f" dataKey="demand"
-                label={({ tower, percent }) => `${tower}: ${(percent * 100).toFixed(0)}%`}>
-                {['#1e3a5f', '#4caf50', '#ff9800', '#f44336', '#2196f3'].map((color, idx) => <Cell key={idx} fill={color} />)}
+              <Pie data={towerChartData} cx="50%" cy="50%" labelLine={false} label={({ tower }) => tower} outerRadius={100} fill="#8884d8" dataKey="outstanding">
+                {COLORS.map((color, index) => (
+                  <Cell key={`cell-${index}`} fill={color} />
+                ))}
               </Pie>
               <Tooltip formatter={(v) => fmt(v)} />
             </PieChart>
           </ResponsiveContainer>
         </div>
-      </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 30 }}>
-        <div style={{ background: '#fff', padding: 20, borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, color: '#1e3a5f' }}>Payment Plans</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={paymentPlanData.slice(0, 6)} layout="vertical">
+        {/* Tower Collection Rate */}
+        <div className="chart-card">
+          <h2 className="chart-title">Tower-wise Collection Rate</h2>
+          <ResponsiveContainer width="100%" height={350}>
+            <BarChart data={towerChartData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" />
-              <YAxis dataKey="plan" type="category" width={120} fontSize={11} />
-              <Tooltip formatter={(v) => fmt(v)} />
-              <Bar dataKey="demand" fill="#2196f3" />
+              <XAxis dataKey="tower" />
+              <YAxis label={{ value: 'Rate (%)', angle: -90, position: 'insideLeft' }} domain={[0, 100]} />
+              <Tooltip formatter={(v) => v.toFixed(2) + '%'} />
+              <Bar dataKey="rate" fill="#7c3aed" name="Collection Rate (%)" />
             </BarChart>
           </ResponsiveContainer>
         </div>
+      </section>
 
-        <div style={{ background: '#fff', padding: 20, borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-          <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, color: '#1e3a5f' }}>Top 10 Customers</h3>
-          <div style={{ fontSize: 12 }}>
-            {topCustomers.map((cust, idx) => (
-              <div key={idx} style={{ padding: '10px 0', borderBottom: '1px solid #eee', display: 'flex', justifyContent: 'space-between' }}>
-                <div>
-                  <div style={{ fontWeight: 600, color: '#1e3a5f' }}>{idx + 1}. {cust.customer}</div>
-                  <div style={{ fontSize: 11, color: '#999' }}>{cust.units} unit(s)</div>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontWeight: 600, color: '#4caf50' }}>₹{fmt(cust.collected)}</div>
-                  <div style={{ fontSize: 11, color: '#999' }}>of ₹{fmt(cust.demand)}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Milestone Table */}
-      <div style={{ background: '#fff', padding: 20, borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.1)', overflowX: 'auto' }}>
-        <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, color: '#1e3a5f' }}>Detailed Milestone Analysis</h3>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-          <thead>
-            <tr style={{ background: '#f5f5f5', borderBottom: '2px solid #ddd' }}>
-              <th style={{ padding: 10, textAlign: 'left', fontWeight: 700 }}>Milestone</th>
-              <th style={{ padding: 10, textAlign: 'right', fontWeight: 700 }}>Demand</th>
-              <th style={{ padding: 10, textAlign: 'right', fontWeight: 700 }}>Collected</th>
-              <th style={{ padding: 10, textAlign: 'right', fontWeight: 700 }}>Outstanding</th>
-              <th style={{ padding: 10, textAlign: 'right', fontWeight: 700 }}>%</th>
-              <th style={{ padding: 10, textAlign: 'center', fontWeight: 700 }}>Units</th>
-            </tr>
-          </thead>
-          <tbody>
-            {milestoneData.map((row, idx) => (
-              <tr key={idx} style={{ borderBottom: '1px solid #eee' }}>
-                <td style={{ padding: 10 }}>{row.milestone.substring(0, 40)}</td>
-                <td style={{ padding: 10, textAlign: 'right', fontWeight: 600 }}>₹{fmt(row.demand)}</td>
-                <td style={{ padding: 10, textAlign: 'right', color: '#4caf50', fontWeight: 600 }}>₹{fmt(row.collected)}</td>
-                <td style={{ padding: 10, textAlign: 'right', color: '#f44336' }}>₹{fmt(row.outstanding)}</td>
-                <td style={{ padding: 10, textAlign: 'right', fontWeight: 600 }}>{row.collectionRate}%</td>
-                <td style={{ padding: 10, textAlign: 'center' }}>{row.count}</td>
+      {/* Milestone-wise Table */}
+      <section className="table-section">
+        <h2 className="section-title">Milestone-wise Summary</h2>
+        <div className="table-container">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Milestone</th>
+                <th>Total Demand</th>
+                <th>Total Collected</th>
+                <th>Outstanding</th>
+                <th>Collection Rate</th>
+                <th>Units</th>
+                <th>Customers</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {processedData.milestones.map((milestone, idx) => (
+                <tr key={idx}>
+                  <td className="milestone-cell">{milestone.name}</td>
+                  <td className="amount-cell">₹ {fmtFull(milestone.total_demand)}</td>
+                  <td className="amount-cell">₹ {fmtFull(milestone.total_collected)}</td>
+                  <td className="amount-cell">₹ {fmtFull(milestone.outstanding)}</td>
+                  <td className={`rate-cell ${milestone.collection_rate >= 75 ? 'high' : milestone.collection_rate >= 50 ? 'medium' : 'low'}`}>
+                    {milestone.collection_rate.toFixed(2)}%
+                  </td>
+                  <td>{milestone.unit_count}</td>
+                  <td>{milestone.customer_count}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-      <footer style={{ textAlign: 'center', color: '#999', fontSize: 12, marginTop: 40, paddingBottom: 20 }}>
-        <p>Data as of {new Date().toLocaleDateString()}</p>
+      {/* Footer */}
+      <footer className="footer">
+        <p>© 2025 Smartworld Sky Arc - Demand & Collection Report Dashboard</p>
       </footer>
     </div>
   );
-}
+};
+
+export default App;

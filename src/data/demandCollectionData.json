@@ -1,0 +1,31 @@
+{
+  "total_records": 4,
+  "total_demand": 15743434763.0,
+  "total_collected": 10819031041.22,
+  "total_outstanding": 4924403721.78,
+  "milestones": {
+    "On Booking": {"total_demand": 151140726.0, "total_collected": 135781694.42, "outstanding": 15359031.58, "unit_count": 890, "customer_count": 854, "collection_rate": 89.84, "tower": "ALL"},
+    "On or Before 12th Nov 2024": {"total_demand": 1187571600.0, "total_collected": 896437751.1, "outstanding": 291133848.9, "unit_count": 245, "customer_count": 243, "collection_rate": 75.48, "tower": "ALL"},
+    "Within 90 days of Allotment": {"total_demand": 6107957850.0, "total_collected": 3818631349.18, "outstanding": 2289326500.82, "unit_count": 811, "customer_count": 784, "collection_rate": 62.52, "tower": "ALL"},
+    "Within 13 months from Allotment": {"total_demand": 4205384848.0, "total_collected": 2964848310.33, "outstanding": 1240536537.67, "unit_count": 818, "customer_count": 790, "collection_rate": 70.5, "tower": "ALL"},
+    "Within 18 months": {"total_demand": 0.0, "total_collected": 0.0, "outstanding": 0.0, "unit_count": 818, "customer_count": 790, "collection_rate": 0, "tower": "ALL"},
+    "Within 25 months": {"total_demand": 0.0, "total_collected": 0.0, "outstanding": 0.0, "unit_count": 818, "customer_count": 790, "collection_rate": 0, "tower": "ALL"},
+    "Within 30 months": {"total_demand": 0.0, "total_collected": 0.0, "outstanding": 0.0, "unit_count": 818, "customer_count": 790, "collection_rate": 0, "tower": "ALL"},
+    "Within 36 months": {"total_demand": 0.0, "total_collected": 0.0, "outstanding": 0.0, "unit_count": 818, "customer_count": 790, "collection_rate": 0, "tower": "ALL"},
+    "Within 42 months": {"total_demand": 0.0, "total_collected": 0.0, "outstanding": 0.0, "unit_count": 818, "customer_count": 790, "collection_rate": 0, "tower": "ALL"},
+    "Within 49 months": {"total_demand": 0.0, "total_collected": 0.0, "outstanding": 0.0, "unit_count": 818, "customer_count": 790, "collection_rate": 0, "tower": "ALL"},
+    "On Application of Occupation": {"total_demand": 0.0, "total_collected": 0.0, "outstanding": 0.0, "unit_count": 869, "customer_count": 835, "collection_rate": 0, "tower": "ALL"},
+    "On Offer of Possession": {"total_demand": 0.0, "total_collected": 0.0, "outstanding": 0.0, "unit_count": 870, "customer_count": 837, "collection_rate": 0, "tower": "ALL"},
+    "On Notice of Offer": {"total_demand": 0.0, "total_collected": 0.0, "outstanding": 0.0, "unit_count": 892, "customer_count": 856, "collection_rate": 0, "tower": "ALL"},
+    "13th Nov 2024": {"total_demand": 2384879463.0, "total_collected": 1860127439.27, "outstanding": 524752023.73, "unit_count": 465, "customer_count": 455, "collection_rate": 78.0, "tower": "ALL"},
+    "13th Nov 2024 Alt": {"total_demand": 542557987.0, "total_collected": 391084624.84, "outstanding": 151473362.16, "unit_count": 95, "customer_count": 93, "collection_rate": 72.08, "tower": "ALL"}
+  },
+  "towers": {
+    "TF": {"total_demand": 3024697300.0, "total_collected": 2045341700.89, "outstanding": 979355599.11, "unit_count": 154, "collection_rate": 67.62},
+    "TB": {"total_demand": 2455557762.0, "total_collected": 1697831364.88, "outstanding": 757726397.12, "unit_count": 148, "collection_rate": 69.14},
+    "TA": {"total_demand": 2806774526.0, "total_collected": 1863817439.02, "outstanding": 942957086.98, "unit_count": 141, "collection_rate": 66.4},
+    "TC": {"total_demand": 2360103572.0, "total_collected": 1571945221.57, "outstanding": 788158350.43, "unit_count": 144, "collection_rate": 66.6},
+    "TD": {"total_demand": 2562263762.0, "total_collected": 1833759239.31, "outstanding": 728504522.69, "unit_count": 153, "collection_rate": 71.57},
+    "TE": {"total_demand": 2534037841.0, "total_collected": 1806336075.55, "outstanding": 727701765.45, "unit_count": 153, "collection_rate": 71.28}
+  }
+}

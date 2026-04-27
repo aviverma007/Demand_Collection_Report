@@ -1,0 +1,1756 @@
+{
+  "total_records": 4,
+  "total_demand": 15743434763.0,
+  "total_collected": 10819031041.22,
+  "total_outstanding": 4924403721.78,
+  "milestones": {
+    "On Booking": {
+      "total_demand": 151140726.0,
+      "total_collected": 135781694.42,
+      "outstanding": 15359031.58,
+      "unit_count": 890,
+      "customer_count": 854,
+      "collection_rate": 89.84
+    },
+    "On or Before 12th Nov 2024": {
+      "total_demand": 1187571600.0,
+      "total_collected": 896437751.1,
+      "outstanding": 291133848.9,
+      "unit_count": 245,
+      "customer_count": 243,
+      "collection_rate": 75.48
+    },
+    " Within 90 days of Allotment or On Start of Excavation whichever is later (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 6107957850.0,
+      "total_collected": 3818631349.18,
+      "outstanding": 2289326500.82,
+      "unit_count": 811,
+      "customer_count": 784,
+      "collection_rate": 62.52
+    },
+    " Within 13 months from Allotment Or On Casting of B2-Basement Slab (whichever is later)": {
+      "total_demand": 4205384848.0,
+      "total_collected": 2964848310.33,
+      "outstanding": 1240536537.67,
+      "unit_count": 818,
+      "customer_count": 790,
+      "collection_rate": 70.5
+    },
+    " Within 18 months from Allotment Or On casting of 5th Floor slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 818,
+      "customer_count": 790,
+      "collection_rate": 0
+    },
+    " Within 25 months from Allotment Or On completion of 20th floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 818,
+      "customer_count": 790,
+      "collection_rate": 0
+    },
+    " Within 30 months from Allotment Or On completion of 30th floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 818,
+      "customer_count": 790,
+      "collection_rate": 0
+    },
+    " Within 36 months from Allotment Or On completion of 40th floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 818,
+      "customer_count": 790,
+      "collection_rate": 0
+    },
+    " Within 42 months from Allotment Or On Commencement of External Plaster (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 818,
+      "customer_count": 790,
+      "collection_rate": 0
+    },
+    " Within 49 months from Allotment Or On completion of flooring in unit (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 818,
+      "customer_count": 790,
+      "collection_rate": 0
+    },
+    "On Application of Occupation Certificate": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 869,
+      "customer_count": 835,
+      "collection_rate": 0
+    },
+    "On Offer of Possession": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 870,
+      "customer_count": 837,
+      "collection_rate": 0
+    },
+    "On Notice of Offer of Possession": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 892,
+      "customer_count": 856,
+      "collection_rate": 0
+    },
+    "On or Before 13th Nov 2024": {
+      "total_demand": 2384879463.0,
+      "total_collected": 1860127439.27,
+      "outstanding": 524752023.73,
+      "unit_count": 465,
+      "customer_count": 455,
+      "collection_rate": 78.0
+    },
+    " On or Before 13th Nov 2024": {
+      "total_demand": 542557987.0,
+      "total_collected": 391084624.84,
+      "outstanding": 151473362.16,
+      "unit_count": 95,
+      "customer_count": 93,
+      "collection_rate": 72.08
+    },
+    " On Application of Occupation Certificate": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 21,
+      "customer_count": 20,
+      "collection_rate": 0
+    },
+    "On or before 22-Jan-2025": {
+      "total_demand": 3854300.0,
+      "total_collected": 3854300.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 13th Jan 2025": {
+      "total_demand": 10811306.0,
+      "total_collected": 8869333.71,
+      "outstanding": 1941972.29,
+      "unit_count": 2,
+      "customer_count": 2,
+      "collection_rate": 82.04
+    },
+    "On or before 17-Jan-2025": {
+      "total_demand": 5123205.0,
+      "total_collected": 3954299.71,
+      "outstanding": 1168905.29,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 77.18
+    },
+    "On or Before 21 Jan 2025": {
+      "total_demand": 5052591.0,
+      "total_collected": 5052591.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 05th January'2025": {
+      "total_demand": 5193815.0,
+      "total_collected": 4972254.0,
+      "outstanding": 221561.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 95.73
+    },
+    "On or Before 16th Jan 2025": {
+      "total_demand": 5052591.0,
+      "total_collected": 3954299.71,
+      "outstanding": 1098291.29,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 78.26
+    },
+    "On or Before 11th Nov'2024": {
+      "total_demand": 15387840.0,
+      "total_collected": 15151796.0,
+      "outstanding": 236044.0,
+      "unit_count": 3,
+      "customer_count": 3,
+      "collection_rate": 98.47
+    },
+    " On or before 26-01-2025 or On Start of Excavation whichever is later (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 23531755.0,
+      "total_collected": 16285149.0,
+      "outstanding": 7246606.0,
+      "unit_count": 3,
+      "customer_count": 3,
+      "collection_rate": 69.2
+    },
+    "On or Before 26th Jan 2025": {
+      "total_demand": 6249531.0,
+      "total_collected": 6249531.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 08th Jan'2025": {
+      "total_demand": 3425626.0,
+      "total_collected": 3425626.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 09th March'2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 10326456.0,
+      "total_collected": 4972254.0,
+      "outstanding": 5354202.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 48.15
+    },
+    "On completion of 40th floor Slab": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 36,
+      "customer_count": 35,
+      "collection_rate": 0
+    },
+    "On or Before 12th Jan 2025": {
+      "total_demand": 6586791.0,
+      "total_collected": 5103521.0,
+      "outstanding": 1483270.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 77.48
+    },
+    "On or Before 14th Jan'2025": {
+      "total_demand": 3504842.0,
+      "total_collected": 3504842.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 15th March'2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 10511294.0,
+      "total_collected": 6463900.0,
+      "outstanding": 4047394.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 61.49
+    },
+    "On or before 19-Jan-2025": {
+      "total_demand": 4272846.0,
+      "total_collected": 4272846.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 20th March 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 12303307.0,
+      "total_collected": 12135915.0,
+      "outstanding": 167392.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 98.64
+    },
+    "On or Before 21st Jan 2025": {
+      "total_demand": 4145744.0,
+      "total_collected": 4145744.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 22nd March'2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 12006735.0,
+      "total_collected": 5152591.0,
+      "outstanding": 6854144.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 42.91
+    },
+    "On or Before 27th Jan'2025": {
+      "total_demand": 2946018.0,
+      "total_collected": 2946018.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 27th April 2025 (On signing of Agreement For Sale)": {
+      "total_demand": 3946018.0,
+      "total_collected": 3946018.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 26th June'2025": {
+      "total_demand": 3946018.0,
+      "total_collected": 3946018.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 21st Jan 2025 or On Start of Excavation whichever is later (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 7443443.0,
+      "total_collected": 4972254.0,
+      "outstanding": 2471189.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 66.8
+    },
+    "On or Before 21st March 2025": {
+      "total_demand": 3394512.0,
+      "total_collected": 3394512.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 20th May 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 10253861.0,
+      "total_collected": 5296982.0,
+      "outstanding": 4956879.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 51.66
+    },
+    "On or Before 29th March 2025": {
+      "total_demand": 4034245.0,
+      "total_collected": 4034245.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 28th May 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 11746575.0,
+      "total_collected": 5152591.0,
+      "outstanding": 6593984.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 43.86
+    },
+    "On Completion of 40th Floor Slab": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 12,
+      "customer_count": 12,
+      "collection_rate": 0
+    },
+    "On or Before 18th April 2025": {
+      "total_demand": 3499523.0,
+      "total_collected": 3499523.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 17th June 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 10498885.0,
+      "total_collected": 10498885.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 23rd April'2025": {
+      "total_demand": 9258781.0,
+      "total_collected": 4306490.44,
+      "outstanding": 4952290.56,
+      "unit_count": 2,
+      "customer_count": 2,
+      "collection_rate": 46.51
+    },
+    " On or Before 07th June 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 12282359.0,
+      "total_collected": 12282357.0,
+      "outstanding": 2.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 25th April 2025": {
+      "total_demand": 3291907.0,
+      "total_collected": 3291907.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 24th July 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 10014446.0,
+      "total_collected": 10014427.0,
+      "outstanding": 19.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 29th April 2025": {
+      "total_demand": 4018642.0,
+      "total_collected": 4018642.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 28th June 2025 (On Signing of Agreement for Sale)": {
+      "total_demand": 11710161.0,
+      "total_collected": 11710161.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 19th Apr 2025": {
+      "total_demand": 3519202.0,
+      "total_collected": 3519202.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 18th June 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 9038400.0,
+      "total_collected": 9038400.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 20th January'2025 or On Start of Excavation whichever is later (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 9524298.0,
+      "total_collected": 4915034.0,
+      "outstanding": 4609264.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 51.61
+    },
+    " On or before 13-02-2025 or On Start of Excavation whichever is later (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 3430058.0,
+      "total_collected": 3430058.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 23rd May 2025": {
+      "total_demand": 4654408.0,
+      "total_collected": 4654408.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 07th July 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 13193618.0,
+      "total_collected": 10014427.0,
+      "outstanding": 3179191.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 75.9
+    },
+    "On or Before 07th May 2025": {
+      "total_demand": 4095158.0,
+      "total_collected": 4095158.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 06th July 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 11888698.0,
+      "total_collected": 11887156.5,
+      "outstanding": 1541.5,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 99.99
+    },
+    "On or Before 15th June 2025": {
+      "total_demand": 20485736.0,
+      "total_collected": 8177992.0,
+      "outstanding": 12307744.0,
+      "unit_count": 5,
+      "customer_count": 5,
+      "collection_rate": 39.92
+    },
+    " On or Before 14th Aug 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 47068823.0,
+      "total_collected": 11437795.0,
+      "outstanding": 35631028.0,
+      "unit_count": 3,
+      "customer_count": 3,
+      "collection_rate": 24.3
+    },
+    "On or Before 18th May 2025": {
+      "total_demand": 4225819.0,
+      "total_collected": 4225819.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 17th July 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 12193575.0,
+      "total_collected": 10014427.0,
+      "outstanding": 2179148.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 82.13
+    },
+    " On/Before 23rd April'2025 or On Start of Excavation whichever is later (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 7642367.0,
+      "total_collected": 7642365.0,
+      "outstanding": 2.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 13th June 2025": {
+      "total_demand": 4145744.0,
+      "total_collected": 4145744.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 27th Aug 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 12006735.0,
+      "total_collected": 12006735.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or before 25th May 2025 or Start of Excavation whichever is later (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 7411134.0,
+      "total_collected": 4823118.0,
+      "outstanding": 2588016.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 65.08
+    },
+    " On or Before 25th Nov 2025 Or Casting of B2-Basement Slab (whichever is later)": {
+      "total_demand": 4940755.0,
+      "total_collected": 4823118.0,
+      "outstanding": 117637.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 97.62
+    },
+    " On or Before 25th Apr 2026 Or On Casting of 5th Floor slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 25th Nov 2026 Or On Completion of 20th floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 25th Apr 2027 Or On Completion of 30th Floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 25th Oct 2027 Or On Completion of 40th Floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 25th Apr 2028 Or On Commencement of External Plaster (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 25th Nov 2028 Or On Completion of Flooring (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 20th June 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 5472590.0,
+      "total_collected": 5472590.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 17th June 2025": {
+      "total_demand": 8423970.0,
+      "total_collected": 7091861.73,
+      "outstanding": 1332108.27,
+      "unit_count": 2,
+      "customer_count": 2,
+      "collection_rate": 84.19
+    },
+    " On or Before 16th Aug 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 26703859.0,
+      "total_collected": 14598617.73,
+      "outstanding": 12105241.27,
+      "unit_count": 2,
+      "customer_count": 2,
+      "collection_rate": 54.67
+    },
+    " On or Before 07th June 2025 or On Start of Excavation whichever is later (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 8554407.0,
+      "total_collected": 4486020.0,
+      "outstanding": 4068387.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 52.44
+    },
+    "On or Before 07th June'2025": {
+      "total_demand": 5483817.0,
+      "total_collected": 4486020.0,
+      "outstanding": 997797.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 81.8
+    },
+    " On or Before 25th Nov 2025 or Casting of B2-Basement Slab (whichever is later)": {
+      "total_demand": 5405136.0,
+      "total_collected": 1.0,
+      "outstanding": 5405135.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0.0
+    },
+    " On or Before 25th Apr 2026 or On Casting of 5th Floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 25th Nov 2026 or On Completion of 20th Floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 25th Apr 2027 or On Completion of 30th Floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 25th Oct 2027 or On Completion of 40th Floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 25th Apr 2028 or On Commencement of External Plaster (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 25th Nov 2028 or On Completion of flooring (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 15th June 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 4394902.0,
+      "total_collected": 4394900.0,
+      "outstanding": 2.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 16th May 2026": {
+      "total_demand": 2697450.0,
+      "total_collected": 0.0,
+      "outstanding": 2697450.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0.0
+    },
+    "On or Before 10th June 2025": {
+      "total_demand": 5617493.0,
+      "total_collected": 4823118.0,
+      "outstanding": 794375.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 85.86
+    },
+    " On or Before 10th June 2025 or On Start of Excavation whichever is later (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 8576239.0,
+      "total_collected": 4823118.0,
+      "outstanding": 3753121.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 56.24
+    },
+    " On or Before 22nd Nov 2025 Or Casting of B2-Basement Slab (whichever is later)": {
+      "total_demand": 5717493.0,
+      "total_collected": 5660320.0,
+      "outstanding": 57173.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 99.0
+    },
+    " On or Before 22nd Apr 2026 Or On casting of 5th Floor slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 22nd Nov 2026 Or On completion of 20th floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 22nd Apr 2027 Or On completion of 30th floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 22nd Oct 2027 Or On completion of 40th floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 22nd Apr 2028 Or On Commencement of External Plaster (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 22nd Nov 2028 Or On completion of flooring (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    "On or Before 12th Nov 2025": {
+      "total_demand": 2343486.0,
+      "total_collected": 243076.0,
+      "outstanding": 2100410.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 10.37
+    },
+    "On or Before 16th June'2025": {
+      "total_demand": 8890855.0,
+      "total_collected": 8890855.0,
+      "outstanding": 0.0,
+      "unit_count": 2,
+      "customer_count": 2,
+      "collection_rate": 100.0
+    },
+    " On or Before 15th Aug 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 24995829.0,
+      "total_collected": 14984663.0,
+      "outstanding": 10011166.0,
+      "unit_count": 2,
+      "customer_count": 2,
+      "collection_rate": 59.95
+    },
+    "On or Before 14th Oct 2025": {
+      "total_demand": 3860456.0,
+      "total_collected": 3860455.73,
+      "outstanding": 0.27,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On completion of Super Structure": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 6,
+      "customer_count": 6,
+      "collection_rate": 0
+    },
+    " On or Before 27th June 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 9072044.0,
+      "total_collected": 8972041.0,
+      "outstanding": 100003.0,
+      "unit_count": 2,
+      "customer_count": 1,
+      "collection_rate": 98.9
+    },
+    "On or Before 14th June 2025": {
+      "total_demand": 6098338.0,
+      "total_collected": 819476.0,
+      "outstanding": 5278862.0,
+      "unit_count": 2,
+      "customer_count": 2,
+      "collection_rate": 13.44
+    },
+    " On or Before 13th Aug 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 15252300.0,
+      "total_collected": 243076.0,
+      "outstanding": 15009224.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 1.59
+    },
+    " On or Before 12th June 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 19237376.0,
+      "total_collected": 4486021.0,
+      "outstanding": 14751355.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 23.32
+    },
+    "On or Before 17th July 2025": {
+      "total_demand": 9699570.0,
+      "total_collected": 4486021.0,
+      "outstanding": 5213549.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 46.25
+    },
+    " On or Before 14th Mar 2027 Or On starting of 10th Floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    "On or Before 30th May 2025": {
+      "total_demand": 3105411.0,
+      "total_collected": 3105411.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 29th July 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 9579291.0,
+      "total_collected": 9579260.0,
+      "outstanding": 31.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 01st July 2025": {
+      "total_demand": 1180180.0,
+      "total_collected": 1180180.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 31st July 2025": {
+      "total_demand": 3920416.0,
+      "total_collected": 3860455.73,
+      "outstanding": 59960.27,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 98.47
+    },
+    " On or Before 29th Sep 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 16801788.0,
+      "total_collected": 3860455.73,
+      "outstanding": 12941332.27,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 22.98
+    },
+    "On Completion of Super Structure": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 3,
+      "customer_count": 3,
+      "collection_rate": 0
+    },
+    "On or Before 14th July 2025": {
+      "total_demand": 3014236.0,
+      "total_collected": 3014236.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 13th Aug 2025(On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 18085410.0,
+      "total_collected": 576400.0,
+      "outstanding": 17509010.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 3.19
+    },
+    "On or Before 15th July 2025": {
+      "total_demand": 4518073.0,
+      "total_collected": 1.0,
+      "outstanding": 4518072.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0.0
+    },
+    " On or Before 13th Sep 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 12875505.0,
+      "total_collected": 1.0,
+      "outstanding": 12875504.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0.0
+    },
+    "On or Before 19th July 2025": {
+      "total_demand": 2861507.0,
+      "total_collected": 2861507.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 18th Aug 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 4719619.0,
+      "total_collected": 4719618.0,
+      "outstanding": 1.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 30th July 2025": {
+      "total_demand": 4795355.0,
+      "total_collected": 4795355.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 30th July 2025 or On Start of Excavation whichever is later (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 7343036.0,
+      "total_collected": 4848735.0,
+      "outstanding": 2494301.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 66.03
+    },
+    " On or Before 28th Nov 2025 Or Casting of B2-Basement Slab (whichever is later)": {
+      "total_demand": 4895357.0,
+      "total_collected": 4848735.0,
+      "outstanding": 46622.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 99.05
+    },
+    " On or Before 28th Apr 2026 Or On casting of 5th Floor slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 28th Nov 2026 Or On Completion of 20th floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 28th Apr 2027 Or On Completion of 30th floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 28th Oct 2027 Or On completion of 40th floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 28th Nov 2028 Or On Completion of Flooring (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 28th Apr 2028 Or On Commencement of External Plaster (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    "On or Before 9th July 2025": {
+      "total_demand": 4964828.0,
+      "total_collected": 4578858.0,
+      "outstanding": 385970.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 92.23
+    },
+    " On or Before 10th July 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 7797576.0,
+      "total_collected": 7797574.0,
+      "outstanding": 2.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 6th Dec 2025 Or Casting of B2-Basement Slab (whichever is later)": {
+      "total_demand": 5039145.0,
+      "total_collected": 0.0,
+      "outstanding": 5039145.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0.0
+    },
+    " On or Before 6th May 2027 Or On completion of 30th floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 6th May 2026 Or On casting of 5th Floor slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 6th Dec 2028 Or On completion of flooring (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 6th Nov 2027 Or On completion of 40th floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 6th Dec 2026 Or On completion of 20th floor Slab (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 6th May 2028 Or On Commencement of External Plaster (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 14th Aug 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 32633387.0,
+      "total_collected": 3807806.0,
+      "outstanding": 28825581.0,
+      "unit_count": 2,
+      "customer_count": 2,
+      "collection_rate": 11.67
+    },
+    "On or Before 22nd July 2025": {
+      "total_demand": 3546766.0,
+      "total_collected": 3546766.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 20th Sep 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 10609118.0,
+      "total_collected": 4848735.0,
+      "outstanding": 5760383.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 45.7
+    },
+    "On or Before 25th Aug 2025": {
+      "total_demand": 3961270.0,
+      "total_collected": 3961270.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 24th Oct 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 11576294.0,
+      "total_collected": 4486021.0,
+      "outstanding": 7090273.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 38.75
+    },
+    " On or Before 12th Aug 2025 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 13465227.0,
+      "total_collected": 4719618.0,
+      "outstanding": 8745609.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 35.05
+    },
+    "On or Before 11th Sep 2025": {
+      "total_demand": 9643484.0,
+      "total_collected": 4719618.0,
+      "outstanding": 4923866.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 48.94
+    },
+    "On or Before 26th Aug 2025": {
+      "total_demand": 3472626.0,
+      "total_collected": 3472626.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 25th Oct 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 10436123.0,
+      "total_collected": 10436123.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 23rd Aug 2025": {
+      "total_demand": 3867050.0,
+      "total_collected": 3867050.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 22nd Oct 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 11356446.0,
+      "total_collected": 4848735.0,
+      "outstanding": 6507711.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 42.7
+    },
+    "On or Before 28th Aug 2025": {
+      "total_demand": 2043626.0,
+      "total_collected": 2043626.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 27th Oct 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 17805376.0,
+      "total_collected": 0.0,
+      "outstanding": 17805376.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0.0
+    },
+    "On or Before 11th Aug 2025": {
+      "total_demand": 4066179.0,
+      "total_collected": 4066179.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 18th Sep 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 5629086.0,
+      "total_collected": 5629086.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 02nd Nov'2025": {
+      "total_demand": 6191993.0,
+      "total_collected": 6172692.0,
+      "outstanding": 19301.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 99.69
+    },
+    "On or Before 12th Oct 2025": {
+      "total_demand": 5917776.0,
+      "total_collected": 5917776.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 9th Feb 2026 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 13835552.0,
+      "total_collected": 13176716.0,
+      "outstanding": 658836.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 95.24
+    },
+    "On or Before 28th Sep 2025": {
+      "total_demand": 2558872.0,
+      "total_collected": 999999.0,
+      "outstanding": 1558873.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 39.08
+    },
+    " On or Before 13th Oct 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 11072040.0,
+      "total_collected": 11072040.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 15th Nov 2025": {
+      "total_demand": 8515569.0,
+      "total_collected": 8515569.0,
+      "outstanding": 0.0,
+      "unit_count": 2,
+      "customer_count": 2,
+      "collection_rate": 100.0
+    },
+    " On or Before 30th Dec 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 10594500.0,
+      "total_collected": 4564696.0,
+      "outstanding": 6029804.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 43.09
+    },
+    " On completion of finishing work/ On or Before 30th Apr 2029 (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 2,
+      "customer_count": 2,
+      "collection_rate": 0
+    },
+    "On or Before 02nd Dec 2025": {
+      "total_demand": 4912577.0,
+      "total_collected": 4912577.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 01st Jan 2026 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 11825152.0,
+      "total_collected": 6970345.0,
+      "outstanding": 4854807.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 58.95
+    },
+    " On completion of finishing work/ On or Before 17th May 2029 (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 15th Dec 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 17428566.0,
+      "total_collected": 11535041.0,
+      "outstanding": 5893525.0,
+      "unit_count": 2,
+      "customer_count": 2,
+      "collection_rate": 66.18
+    },
+    "On or Before 13th Dec'2025": {
+      "total_demand": 4612987.0,
+      "total_collected": 4612987.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 12th Jan 2026 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 11225972.0,
+      "total_collected": 11001099.0,
+      "outstanding": 224873.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 98.0
+    },
+    " On or Before 9th Jan 2026 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 3712402.0,
+      "total_collected": 3712400.0,
+      "outstanding": 2.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 4th Jan 2026 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 3315082.0,
+      "total_collected": 3315082.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 13th Nov 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 3043026.0,
+      "total_collected": 3043025.0,
+      "outstanding": 1.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 14th Sep 2026": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    "On or Before 14th Sep 2027": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 05th Nov 2025 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 4618205.0,
+      "total_collected": 4564696.0,
+      "outstanding": 53509.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 98.84
+    },
+    "On or Before 30th Nov 2025": {
+      "total_demand": 3339823.0,
+      "total_collected": 3339823.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On Completion of Finishing Work/ On or Before 15th May 2029. (Whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    "ON BOOKING": {
+      "total_demand": 1000000.0,
+      "total_collected": 1000000.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 7th Jan 2026 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 3315082.0,
+      "total_collected": 3315080.0,
+      "outstanding": 2.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "ON OFFER OF POSSESSION": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 05th Jan 2026 or Less booking amount": {
+      "total_demand": 3801652.0,
+      "total_collected": 2400825.0,
+      "outstanding": 1400827.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 63.15
+    },
+    " On or Before 4th Feb 2026 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 2400826.0,
+      "total_collected": 2400825.0,
+      "outstanding": 1.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 21-12-2025 (Execution/Signing of Agreement For Sale)": {
+      "total_demand": 6402588.0,
+      "total_collected": 6402588.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 28-01-2026": {
+      "total_demand": 14805172.0,
+      "total_collected": 8631545.0,
+      "outstanding": 6173627.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 58.3
+    },
+    " On or Before 14-06-2029 Or On Completion of Finishing Work ( whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 13th Jan 2026 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 8631546.0,
+      "total_collected": 8631545.0,
+      "outstanding": 1.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On Completion of finishing work/ On or Before 14th June 2029 (Whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 11th Jan 2026 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 3378256.0,
+      "total_collected": 3378256.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 10th Feb 2026": {
+      "total_demand": 3721518.0,
+      "total_collected": 3721515.68,
+      "outstanding": 2.32,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On Completion of Finishing Work/ On or before 27th June 2029 (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    "On or Before 30th Jan 2026 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 8834231.0,
+      "total_collected": 8693741.0,
+      "outstanding": 140490.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 98.41
+    },
+    "On or Before 1st March 2026": {
+      "total_demand": 4917115.0,
+      "total_collected": 3721515.68,
+      "outstanding": 1195599.32,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 75.68
+    },
+    " On or Before 22nd Feb 2026 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 4250128.0,
+      "total_collected": 4000120.0,
+      "outstanding": 250008.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 94.12
+    },
+    "On or Before 23rd April 2026": {
+      "total_demand": 10500252.0,
+      "total_collected": 0.0,
+      "outstanding": 10500252.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0.0
+    },
+    " On or Before 10th Jan 2026 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 4315984.0,
+      "total_collected": 3315080.0,
+      "outstanding": 1000904.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 76.81
+    },
+    "On or Before 24th February 2026": {
+      "total_demand": 10631963.0,
+      "total_collected": 3315080.0,
+      "outstanding": 7316883.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 31.18
+    },
+    " On Completion of Finishing Work / On or before 26th June 2029 (whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 18th Feb 2026 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 5721037.0,
+      "total_collected": 5721037.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    "On or Before 04th April 2026": {
+      "total_demand": 13442072.0,
+      "total_collected": 0.0,
+      "outstanding": 13442072.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0.0
+    },
+    "On or Before 12th March 2026": {
+      "total_demand": 4662430.0,
+      "total_collected": 4608502.0,
+      "outstanding": 53928.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 98.84
+    },
+    " On or Before 26th Apr 2026 (On Execution / Signing of Agreement for Sale)": {
+      "total_demand": 5662430.0,
+      "total_collected": 0.0,
+      "outstanding": 5662430.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0.0
+    },
+    "On or Before 25th May 2027": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    "On or Before 07 Mar 2026": {
+      "total_demand": 1796256.0,
+      "total_collected": 1796256.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 100.0
+    },
+    " On or Before 29 Apr 2026 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 2485560.0,
+      "total_collected": 2435257.0,
+      "outstanding": 50303.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 97.98
+    },
+    "On or Before 06th Apr 2026": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 2,
+      "customer_count": 2,
+      "collection_rate": 0
+    },
+    "On or Before 11th Mar 2026": {
+      "total_demand": 4777373.0,
+      "total_collected": 1100000.0,
+      "outstanding": 3677373.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 23.03
+    },
+    " On or Before 26th Mar 2026 (On Execution/Signing of Agreement for Sale)": {
+      "total_demand": 11554744.0,
+      "total_collected": 0.0,
+      "outstanding": 11554744.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0.0
+    },
+    "On or Before 5th April 2026": {
+      "total_demand": 3814096.0,
+      "total_collected": 2435257.0,
+      "outstanding": 1378839.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 63.85
+    },
+    " On or Before 5th April 2026(On Execution/ Signing of Agreement for Sale)": {
+      "total_demand": 2407048.0,
+      "total_collected": 2338274.0,
+      "outstanding": 68774.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 97.14
+    },
+    " On Completion of Finishing Work/ On or Before 4th August 2029 (Whichever is later)": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    " On or Before 31st March 2026 (On Execution/Signing of Agreement for Sale )": {
+      "total_demand": 4795938.0,
+      "total_collected": 4745937.0,
+      "outstanding": 50001.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 98.96
+    },
+    "On or Before 01st June 2027": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    "ON APPLICATION OF OCCUPATION CERTIFICATE": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    },
+    "On Notice of offer of Possession": {
+      "total_demand": 0.0,
+      "total_collected": 0.0,
+      "outstanding": 0.0,
+      "unit_count": 1,
+      "customer_count": 1,
+      "collection_rate": 0
+    }
+  },
+  "towers": {
+    "TF": {
+      "total_demand": 3024697300.0,
+      "total_collected": 2045341700.89,
+      "outstanding": 979355599.11,
+      "unit_count": 154,
+      "collection_rate": 67.62
+    },
+    "TB": {
+      "total_demand": 2455557762.0,
+      "total_collected": 1697831364.88,
+      "outstanding": 757726397.12,
+      "unit_count": 148,
+      "collection_rate": 69.14
+    },
+    "TA": {
+      "total_demand": 2806774526.0,
+      "total_collected": 1863817439.02,
+      "outstanding": 942957086.98,
+      "unit_count": 141,
+      "collection_rate": 66.4
+    },
+    "TC": {
+      "total_demand": 2360103572.0,
+      "total_collected": 1571945221.57,
+      "outstanding": 788158350.43,
+      "unit_count": 144,
+      "collection_rate": 66.6
+    },
+    "TD": {
+      "total_demand": 2562263762.0,
+      "total_collected": 1833759239.31,
+      "outstanding": 728504522.69,
+      "unit_count": 153,
+      "collection_rate": 71.57
+    },
+    "TE": {
+      "total_demand": 2534037841.0,
+      "total_collected": 1806336075.55,
+      "outstanding": 727701765.45,
+      "unit_count": 153,
+      "collection_rate": 71.28
+    }
+  }
+}
