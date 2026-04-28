@@ -7,6 +7,7 @@ import {
 import { Building2, IndianRupee, TrendingUp, RotateCcw, BarChart3, PieChart as PieIcon, Activity, Wallet, LayoutGrid } from 'lucide-react';
 import data from './dashboardData.json';
 import './SalesDashboard.css';
+import MilestoneModal from './MilestoneModal.jsx';
 
 /* ── exact palette from App.css / App.jsx ─── */
 const C = {
@@ -47,6 +48,15 @@ const BUCKET_GRAD = {
   'Not Yet Due': ['#4a9fe8','#1e5a9f'],
 };
 const PIE_COLORS = [C.blue, C.brownLt, C.blueAcc, C.gold, C.green, C.rose];
+
+/* Pre-sorted billed / unbilled milestone rows */
+const BILLED_ROWS   = [...data.milestone_list]
+  .filter(m => m.billed_count > 0)
+  .sort((a, b) => b.billed_count - a.billed_count);
+
+const UNBILLED_ROWS = [...data.milestone_list]
+  .filter(m => m.unbilled_count > 0)
+  .sort((a, b) => b.unbilled_count - a.unbilled_count);
 
 const TT_STYLE = {
   background:'rgba(255,255,255,0.96)', backdropFilter:'blur(12px)',
@@ -150,6 +160,119 @@ function KPI3D({ icon, label, value, sub, color, delay=0, ring }) {
   );
 }
 
+/* ── Billed / Unbilled Clickable Card with Hover Preview ─── */
+function BilledCard({ type, count, color, delay, onClick }) {
+  const [hovered, setHovered]   = useState(false);
+  const [showPrev, setShowPrev] = useState(false);
+  const isBilled   = type === 'billed';
+  const label      = isBilled ? 'BILLED' : 'UNBILLED';
+  const sub        = isBilled ? 'Invoices raised' : 'Pending invoicing';
+  const icon       = isBilled ? '🧾' : '🔔';
+  const previewRows = isBilled ? BILLED_ROWS.slice(0, 5) : UNBILLED_ROWS.slice(0, 5);
+  const countKey   = isBilled ? 'billed_count'  : 'unbilled_count';
+  const amtKey     = isBilled ? 'billed_amount'  : 'unbilled_amount';
+
+  let hoverTimer = null;
+
+  return (
+    <div
+      style={{ position: 'relative', animationDelay: `${delay * 0.08}s` }}
+      onMouseEnter={() => { setHovered(true); hoverTimer = setTimeout(() => setShowPrev(true), 350); }}
+      onMouseLeave={() => { setHovered(false); clearTimeout(hoverTimer); setShowPrev(false); }}
+    >
+      {/* Main Card */}
+      <div
+        onClick={onClick}
+        style={{
+          background: 'var(--bg-glass)',
+          backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+          border: `1.5px solid ${hovered ? color + '60' : 'var(--border-glass)'}`,
+          borderTop: `3px solid ${color}`,
+          borderRadius: 'var(--radius)',
+          padding: '14px 14px 12px',
+          position: 'relative', overflow: 'hidden', cursor: 'pointer',
+          display: 'flex', alignItems: 'flex-start', gap: 10,
+          transformStyle: 'preserve-3d',
+          transform: hovered ? 'perspective(600px) rotateX(-2deg) translateY(-6px) scale(1.03)' : 'perspective(600px) rotateX(0) translateY(0) scale(1)',
+          boxShadow: hovered
+            ? `0 24px 50px ${color}30, 0 0 0 1px ${color}20, inset 0 1px 0 rgba(255,255,255,0.7)`
+            : `0 3px 12px ${color}15, inset 0 1px 0 rgba(255,255,255,0.6)`,
+          transition: 'all 0.25s cubic-bezier(0.34,1.56,0.64,1)',
+          animation: 'slide-up 0.6s ease-out backwards, glow-breathe 4s ease-in-out infinite',
+          '--glow-color': `${color}18`,
+        }}
+      >
+        {/* Shimmer */}
+        <div style={{ position:'absolute', top:'-60%', left:'-60%', width:'60%', height:'220%', background:'linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)', animation:'shimmer 3.5s ease-in-out infinite', pointerEvents:'none' }}/>
+        {/* Corner glow */}
+        <div style={{ position:'absolute', top:-20, right:-20, width:70, height:70, borderRadius:'50%', background:`radial-gradient(circle, ${color}25 0%, transparent 65%)`, transform: hovered ? 'scale(2)' : 'scale(1)', opacity: hovered ? 0.7 : 0.2, transition:'all .4s ease', pointerEvents:'none' }}/>
+
+        {/* Icon */}
+        <div style={{
+          width:32, height:32, borderRadius:9,
+          background: `linear-gradient(145deg, ${color}20, ${color}10)`,
+          border: `1.5px solid ${color}25`, color,
+          display:'flex', alignItems:'center', justifyContent:'center',
+          fontSize:16, flexShrink:0,
+          boxShadow: hovered ? `0 6px 20px ${color}30` : `0 2px 8px ${color}12`,
+          transform: hovered ? 'scale(1.15)' : 'scale(1)',
+          transition:'all 0.35s cubic-bezier(.175,.885,.32,1.275)',
+        }}>{icon}</div>
+
+        <div>
+          <div style={{ fontSize:8, color:'var(--text3)', fontWeight:700, textTransform:'uppercase', letterSpacing:'.6px', marginBottom:2 }}>{label}</div>
+          <div style={{ fontFamily:"'Space Mono',monospace", fontSize:'clamp(13px,1.4vw,17px)', fontWeight:700, color:color, lineHeight:1.15 }}>{count.toLocaleString()}</div>
+          <div style={{ fontSize:10, color:'var(--text2)', marginTop:3, fontWeight:500 }}>{sub}</div>
+          {/* Click hint */}
+          <div style={{ fontSize:9, color: color, opacity: hovered ? 1 : 0, marginTop:4, fontWeight:700, transition:'opacity 0.2s', display:'flex', alignItems:'center', gap:3 }}>
+            <span>View table</span><span>→</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Hover Preview Popup */}
+      {showPrev && (
+        <div style={{
+          position:'absolute', top:'calc(100% + 8px)', left:'50%', transform:'translateX(-50%)',
+          width:340, background:'rgba(255,255,255,0.98)', backdropFilter:'blur(20px)',
+          border:`1.5px solid ${color}30`, borderRadius:14,
+          boxShadow:`0 20px 60px rgba(0,0,0,0.2), 0 0 0 1px ${color}15`,
+          zIndex:500, overflow:'hidden',
+          animation:'slide-up 0.18s ease-out',
+        }}>
+          <div style={{ padding:'10px 14px', background:`linear-gradient(135deg, ${color}ee, ${color}cc)`, color:'#fff' }}>
+            <div style={{ fontSize:11, fontWeight:700 }}>Top 5 {label} Milestones</div>
+            <div style={{ fontSize:10, opacity:0.8, marginTop:1 }}>Click card to see all {isBilled ? BILLED_ROWS.length : UNBILLED_ROWS.length}</div>
+          </div>
+          <table style={{ width:'100%', borderCollapse:'collapse', fontSize:11 }}>
+            <thead>
+              <tr style={{ background:'rgba(0,0,0,0.04)' }}>
+                <th style={{ padding:'6px 10px', textAlign:'left', fontSize:9, fontWeight:700, color:'#8b7355', textTransform:'uppercase' }}>Milestone</th>
+                <th style={{ padding:'6px 10px', textAlign:'right', fontSize:9, fontWeight:700, color:'#8b7355', textTransform:'uppercase' }}>Count</th>
+                <th style={{ padding:'6px 10px', textAlign:'right', fontSize:9, fontWeight:700, color:'#8b7355', textTransform:'uppercase' }}>Amt (Cr)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {previewRows.map((m, i) => (
+                <tr key={i} style={{ borderTop:'1px solid rgba(180,160,140,0.12)', background: i%2===0 ? '#fff' : 'rgba(241,237,232,0.4)' }}>
+                  <td style={{ padding:'7px 10px', color:'#1e3a5f', fontWeight:600, maxWidth:180, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }} title={m.name}>
+                    {m.name.length > 28 ? m.name.slice(0,28)+'…' : m.name}
+                  </td>
+                  <td style={{ padding:'7px 10px', textAlign:'right', fontFamily:"'Space Mono',monospace", color, fontWeight:700 }}>{m[countKey].toLocaleString()}</td>
+                  <td style={{ padding:'7px 10px', textAlign:'right', fontFamily:"'Space Mono',monospace", color:'#8b5e3c', fontWeight:700 }}>₹{m[amtKey].toFixed(1)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div style={{ padding:'8px 14px', textAlign:'center', fontSize:10, color, fontWeight:700, borderTop:'1px solid rgba(180,160,140,0.15)', background:'rgba(0,0,0,0.02)', cursor:'pointer' }}>
+            Click card to view all →
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ── Glass Chart Card ─── */
 function GlassCard({ title, icon, color='var(--blue)', children, wide, delay=0, style:extra }) {
   const [hov, setHov] = useState(false);
@@ -207,6 +330,7 @@ export default function Dashboard() {
   const [fp, setFp]   = useState('All');
   const [fc, setFc]   = useState('All');
   const s = data.summary;
+  const [modal, setModal] = useState(null); // 'billed' | 'unbilled' | null
 
   const ageCountArr = ['1–30 Days','31–90 Days','91–180 Days','181+ Days','Not Yet Due'].map(b=>({
     name:b, count:data.ageing[b]?.count??0,
@@ -289,8 +413,8 @@ export default function Dashboard() {
         <KPI3D icon={<IndianRupee size={20}/>} label="Total Demand"  value={`₹${s.total_demand_cr} Crs`}    sub={`${s.total_records.toLocaleString()} installments`} color={C.brownLt} delay={1}/>
         <KPI3D icon={<Wallet size={20}/>}      label="Received"      value={`₹${s.total_received_cr} Crs`}  sub={`${s.collection_rate}% collected`} color={C.green}   delay={2} ring={parseFloat(s.collection_rate)}/>
         <KPI3D icon={<TrendingUp size={20}/>}  label="Outstanding"   value={`₹${s.total_outstanding_cr} Crs`} sub="Pending payment"                color={C.rose}    delay={3}/>
-        <KPI3D icon={<BarChart3 size={20}/>}   label="Billed"        value={s.billed_count.toLocaleString()} sub="Invoices raised"                  color={C.blueAcc} delay={4}/>
-        <KPI3D icon={<Activity size={20}/>}    label="Unbilled"      value={s.unbilled_count.toLocaleString()} sub="Pending invoicing"              color={C.gold}    delay={5}/>
+        <BilledCard type="billed"   count={s.billed_count}   color={C.blue}  delay={4} onClick={()=>setModal('billed')}/>
+        <BilledCard type="unbilled" count={s.unbilled_count} color={C.gold} delay={5} onClick={()=>setModal('unbilled')}/>
         <KPI3D icon={<Building2 size={20}/>}   label="Milestones"    value={s.total_milestones}             sub={`${s.total_towers} towers`}        color={C.brownDk} delay={6}/>
       </section>
 
@@ -596,6 +720,10 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+
+      {/* ── Billed / Unbilled Modals ── */}
+      {modal === 'billed'   && <MilestoneModal type="billed"   rows={BILLED_ROWS}   onClose={()=>setModal(null)}/>}
+      {modal === 'unbilled' && <MilestoneModal type="unbilled" rows={UNBILLED_ROWS} onClose={()=>setModal(null)}/>}
 
       <footer className="dash-footer">
         Smartworld Sky Arc · Demand &amp; Collection Dashboard · {new Date().toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'})}

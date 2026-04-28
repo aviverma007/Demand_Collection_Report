@@ -1,0 +1,114 @@
+/* ── BACKDROP ── */
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  animation: fade-in 0.2s ease-out;
+}
+@keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
+
+/* ── MODAL BOX ── */
+.modal-box {
+  background: rgba(255,255,255,0.97);
+  border-radius: 20px;
+  width: 100%; max-width: 900px;
+  max-height: 85vh;
+  display: flex; flex-direction: column;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.3);
+  overflow: hidden;
+  animation: pop-in 0.25s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.92) translateY(20px) }
+  to   { opacity: 1; transform: scale(1) translateY(0) }
+}
+
+/* ── HEADER ── */
+.modal-header {
+  padding: 20px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  color: white; flex-shrink: 0;
+}
+.modal-header h2 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px; font-weight: 800; letter-spacing: -0.3px;
+}
+.modal-header p {
+  font-size: 12px; opacity: 0.8; margin-top: 3px;
+}
+.modal-close {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.3);
+  color: white; cursor: pointer; font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; flex-shrink: 0;
+}
+.modal-close:hover { background: rgba(255,255,255,0.35); transform: scale(1.1); }
+
+/* ── SUMMARY CHIPS ── */
+.modal-chips {
+  display: flex; gap: 10px; padding: 14px 24px;
+  border-bottom: 1px solid rgba(180,160,140,0.2);
+  flex-shrink: 0;
+}
+.chip {
+  flex: 1; border-radius: 12px; padding: 10px 14px;
+  border: 1px solid transparent; text-align: center;
+  transition: transform 0.2s;
+}
+.chip:hover { transform: translateY(-2px); }
+.chip-val {
+  display: block; font-family: 'Space Mono', monospace;
+  font-size: 20px; font-weight: 700; line-height: 1;
+}
+.chip-lbl {
+  display: block; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .6px;
+  color: #8b7355; margin-top: 4px;
+}
+
+/* ── TABLE SCROLL WRAPPER ── */
+.modal-table-wrap {
+  flex: 1; overflow-y: auto; overflow-x: auto;
+  min-height: 0;
+  /* custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(180,160,140,0.5) transparent;
+}
+.modal-table-wrap::-webkit-scrollbar { width: 6px; height: 6px; }
+.modal-table-wrap::-webkit-scrollbar-track { background: transparent; }
+.modal-table-wrap::-webkit-scrollbar-thumb { background: rgba(180,160,140,0.4); border-radius: 3px; }
+.modal-table-wrap::-webkit-scrollbar-thumb:hover { background: rgba(180,160,140,0.7); }
+
+/* ── TABLE ── */
+.modal-table {
+  width: 100%; border-collapse: collapse;
+  font-family: 'DM Sans', sans-serif; font-size: 13px;
+}
+.modal-table thead {
+  position: sticky; top: 0; z-index: 1;
+  background: #f1ede8;
+}
+.modal-table thead tr {
+  border-bottom: 2px solid rgba(180,160,140,0.3);
+}
+.modal-table th {
+  padding: 11px 14px; text-align: left;
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .7px; color: #8b7355; white-space: nowrap;
+}
+.modal-table td { padding: 10px 14px; border-bottom: 1px solid rgba(180,160,140,0.12); }
+.modal-table tr.even td { background: rgba(255,255,255,0.85); }
+.modal-table tr.odd  td { background: rgba(241,237,232,0.5); }
+.modal-table tr:hover td { background: var(--mc-bg, rgba(30,58,95,0.04)); transition: background 0.12s; }
+.modal-table .idx { color: #aaa; font-size: 11px; width: 36px; }
+.modal-table .ms-name { font-weight: 600; color: #1e3a5f; max-width: 340px; }
+.modal-table .num { font-family: 'Space Mono', monospace; font-size: 12px; text-align: right; }
+.modal-table .amt { font-weight: 700; color: var(--mc, #1e3a5f); }
+
+.bkt-chip {
+  display: inline-block; padding: 2px 8px; border-radius: 99px;
+  font-size: 10px; font-weight: 700; white-space: nowrap;
+}
