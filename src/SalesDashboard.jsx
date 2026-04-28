@@ -431,11 +431,6 @@ export default function Dashboard() {
                   <XAxis dataKey="name" tick={{fill:C.text3,fontSize:10,fontWeight:600}} axisLine={false} tickLine={false}/>
                   <YAxis tick={{fill:C.text3,fontSize:10}} axisLine={false} tickLine={false}/>
                   <Tooltip contentStyle={TT_STYLE} formatter={(v,n)=>[v.toLocaleString(),n]}/>
-                          {d.name}
-                        </span>
-                      ))}
-                    </div>
-                  )}/>
                   <Bar dataKey="count" name="Count" radius={[8,8,0,0]} animationDuration={1400}>
                     {ageCountArr.map((e,i)=><Cell key={i} fill={e.fill}/>)}
                     <LabelList dataKey="count" position="top" formatter={v=>v.toLocaleString()} style={{fontSize:11,fontWeight:700,fill:C.text}}/>
@@ -454,11 +449,6 @@ export default function Dashboard() {
                   <XAxis dataKey="name" tick={{fill:C.text3,fontSize:10,fontWeight:600}} axisLine={false} tickLine={false}/>
                   <YAxis unit=" Cr" tick={{fill:C.text3,fontSize:10}} axisLine={false} tickLine={false}/>
                   <Tooltip contentStyle={TT_STYLE} formatter={(v,n)=>[`₹${v} Crs`,n]}/>
-                          {d.name}
-                        </span>
-                      ))}
-                    </div>
-                  )}/>
                   <Bar dataKey="amount" name="Outstanding Crs" radius={[8,8,0,0]} animationDuration={1400}>
                     {ageAmtArr.map((e,i)=><Cell key={i} fill={e.fill}/>)}
                     <LabelList dataKey="amount" position="top" formatter={v=>`${v}Cr`} style={{fontSize:10,fontWeight:700,fill:C.text}}/>
@@ -480,11 +470,6 @@ export default function Dashboard() {
                     {ageAmtArr.map((e,i)=><Cell key={i} fill={e.solidColor}/>)}
                   </Pie>
                   <Tooltip contentStyle={TT_STYLE} formatter={(v,n)=>[`₹${v} Crs`,n]}/>
-                          {e.value}
-                        </span>
-                      ))}
-                    </div>
-                  )}/>
                 </PieChart>
               </ResponsiveContainer>
                   <ChartLegend items={
