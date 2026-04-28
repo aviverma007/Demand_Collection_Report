@@ -55,19 +55,31 @@ const TT_STYLE = {
 };
 
 /* ── Custom Legend renderer ─── */
+/* resolve gradient URL refs → real hex color for legend swatches */
+const resolveColor = (entry) => {
+  const raw = entry.color || entry.fill || '#888';
+  if (typeof raw === 'string' && raw.startsWith('url(')) {
+    // fall back to the stroke color Recharts also passes
+    return entry.stroke || entry.color || '#888';
+  }
+  return raw;
+};
 const renderLegend = (props) => {
   const { payload } = props;
   return (
     <div style={{ display:'flex', flexWrap:'wrap', justifyContent:'center', gap:'10px 18px', paddingTop:8 }}>
-      {payload.map((entry, i) => (
-        <span key={i} style={{ display:'flex', alignItems:'center', gap:6, fontSize:11, color:C.text2, fontWeight:600 }}>
-          <span style={{
-            width:12, height:12, borderRadius:3, flexShrink:0, display:'inline-block',
-            background: entry.color || entry.fill,
-          }}/>
-          {entry.value}
-        </span>
-      ))}
+      {payload.map((entry, i) => {
+        const swatchColor = resolveColor(entry);
+        return (
+          <span key={i} style={{ display:'flex', alignItems:'center', gap:6, fontSize:11, color:C.text2, fontWeight:600 }}>
+            <span style={{
+              width:12, height:12, borderRadius:3, flexShrink:0, display:'inline-block',
+              background: swatchColor,
+            }}/>
+            {entry.value}
+          </span>
+        );
+      })}
     </div>
   );
 };
@@ -305,8 +317,8 @@ export default function Dashboard() {
                   <YAxis tick={{fill:C.text3,fontSize:10}} axisLine={false} tickLine={false} tickFormatter={v=>`${v}Cr`}/>
                   <Tooltip contentStyle={TT_STYLE} formatter={(v,n)=>[`₹${v} Cr`,n]}/>
                   <Legend content={renderLegend}/>
-                  <Bar dataKey="demand" name="Demand" fill="url(#gDemandBar)" radius={[8,8,0,0]} barSize={24} animationDuration={1200}/>
-                  <Line type="monotone" dataKey="received" name="Received" stroke={C.blue} strokeWidth={3}
+                  <Bar dataKey="demand" name="Demand" fill="url(#gDemandBar)" color={GRADIENTS.demand[0]} legendType="square" radius={[8,8,0,0]} barSize={24} animationDuration={1200}/>
+                  <Line type="monotone" dataKey="received" name="Received" stroke={C.blue} color={C.blue} legendType="circle" strokeWidth={3}
                     dot={{r:4,fill:'#fff',stroke:C.blue,strokeWidth:2}}
                     activeDot={{r:7,fill:C.blue,stroke:'#fff',strokeWidth:2}}
                     animationDuration={1600}/>
@@ -344,7 +356,7 @@ export default function Dashboard() {
                   <YAxis domain={[0,100]} unit="%" tick={{fill:C.text3,fontSize:10}} axisLine={false} tickLine={false}/>
                   <Tooltip contentStyle={TT_STYLE} formatter={v=>[`${v}%`,'Collection Rate']}/>
                   <Legend content={renderLegend}/>
-                  <Bar dataKey="collection_rate" name="Collection Rate %" radius={[8,8,0,0]} animationDuration={1400}>
+                  <Bar dataKey="collection_rate" name="Collection Rate %" color={C.blue} legendType="square" radius={[8,8,0,0]} animationDuration={1400}>
                     {data.tower_list.map((_,i)=><Cell key={i} fill={`url(#grad-tower-${i%TOWER_GRAD.length})`}/>)}
                     <LabelList dataKey="collection_rate" position="top" formatter={v=>`${v}%`} style={{fontSize:11,fontWeight:700,fill:C.text}}/>
                   </Bar>
@@ -372,13 +384,13 @@ export default function Dashboard() {
                   <YAxis unit=" Cr" tick={{fill:C.text3,fontSize:10}} axisLine={false} tickLine={false}/>
                   <Tooltip contentStyle={TT_STYLE} formatter={(v,n)=>[`₹${v} Cr`,n]}/>
                   <Legend content={renderLegend}/>
-                  <Bar dataKey="Demand"      fill="url(#gDemand2)"      radius={[6,6,0,0]} animationDuration={1200}>
+                  <Bar dataKey="Demand"      fill="url(#gDemand2)"      color={GRADIENTS.blue[0]}  legendType="square" radius={[6,6,0,0]} animationDuration={1200}>
                     <LabelList dataKey="Demand"      position="top" style={{fontSize:10,fontWeight:700,fill:C.blue}}    formatter={v=>`${v}`}/>
                   </Bar>
-                  <Bar dataKey="Received"    fill="url(#gReceived2)"    radius={[6,6,0,0]} animationDuration={1300}>
+                  <Bar dataKey="Received"    fill="url(#gReceived2)"    color={GRADIENTS.brown[0]} legendType="square" radius={[6,6,0,0]} animationDuration={1300}>
                     <LabelList dataKey="Received"    position="top" style={{fontSize:10,fontWeight:700,fill:C.brownDk}} formatter={v=>`${v}`}/>
                   </Bar>
-                  <Bar dataKey="Outstanding" fill="url(#gOutstanding2)" radius={[6,6,0,0]} animationDuration={1400}>
+                  <Bar dataKey="Outstanding" fill="url(#gOutstanding2)" color={GRADIENTS.rose[0]}  legendType="square" radius={[6,6,0,0]} animationDuration={1400}>
                     <LabelList dataKey="Outstanding" position="top" style={{fontSize:10,fontWeight:700,fill:C.rose}}    formatter={v=>`${v}`}/>
                   </Bar>
                 </BarChart>
@@ -420,7 +432,7 @@ export default function Dashboard() {
                       ))}
                     </div>
                   )}/>
-                  <Bar dataKey="count" name="Count" radius={[8,8,0,0]} animationDuration={1400}>
+                  <Bar dataKey="count" name="Count" color={C.blue} legendType="none" radius={[8,8,0,0]} animationDuration={1400}>
                     {ageCountArr.map((e,i)=><Cell key={i} fill={e.fill}/>)}
                     <LabelList dataKey="count" position="top" formatter={v=>v.toLocaleString()} style={{fontSize:11,fontWeight:700,fill:C.text}}/>
                   </Bar>
@@ -445,7 +457,7 @@ export default function Dashboard() {
                       ))}
                     </div>
                   )}/>
-                  <Bar dataKey="amount" name="Outstanding Crs" radius={[8,8,0,0]} animationDuration={1400}>
+                  <Bar dataKey="amount" name="Outstanding Crs" color={C.rose} legendType="none" radius={[8,8,0,0]} animationDuration={1400}>
                     {ageAmtArr.map((e,i)=><Cell key={i} fill={e.fill}/>)}
                     <LabelList dataKey="amount" position="top" formatter={v=>`${v}Cr`} style={{fontSize:10,fontWeight:700,fill:C.text}}/>
                   </Bar>
@@ -499,7 +511,7 @@ export default function Dashboard() {
                   <YAxis type="category" dataKey="name" width={190} tick={{fill:C.text,fontSize:9,fontWeight:600}} axisLine={false} tickLine={false}/>
                   <Tooltip contentStyle={TT_STYLE} formatter={(v,n)=>[v.toLocaleString(),n]}/>
                   <Legend content={renderLegend}/>
-                  <Bar dataKey="unbilled_count" name="Unbilled Count" fill="url(#gUnbilledCount)" radius={[0,8,8,0]} animationDuration={1400}>
+                  <Bar dataKey="unbilled_count" name="Unbilled Count" fill="url(#gUnbilledCount)" color={GRADIENTS.blue[0]} legendType="square" radius={[0,8,8,0]} animationDuration={1400}>
                     <LabelList dataKey="unbilled_count" position="right" style={{fontSize:10,fontWeight:700,fill:C.text}} formatter={v=>v.toLocaleString()}/>
                   </Bar>
                 </BarChart>
@@ -520,7 +532,7 @@ export default function Dashboard() {
                   <YAxis type="category" dataKey="name" width={190} tick={{fill:C.text,fontSize:9,fontWeight:600}} axisLine={false} tickLine={false}/>
                   <Tooltip contentStyle={TT_STYLE} formatter={(v,n)=>[`₹${v} Crs`,n]}/>
                   <Legend content={renderLegend}/>
-                  <Bar dataKey="unbilled_amount" name="Unbilled Amount (Crs)" fill="url(#gUnbilledAmt)" radius={[0,8,8,0]} animationDuration={1400}>
+                  <Bar dataKey="unbilled_amount" name="Unbilled Amount (Crs)" fill="url(#gUnbilledAmt)" color={GRADIENTS.demand[0]} legendType="square" radius={[0,8,8,0]} animationDuration={1400}>
                     <LabelList dataKey="unbilled_amount" position="right" style={{fontSize:10,fontWeight:700,fill:C.brownDk}} formatter={v=>`${v}Cr`}/>
                   </Bar>
                 </BarChart>
@@ -567,9 +579,9 @@ export default function Dashboard() {
                   <YAxis unit=" Cr" tick={{fill:C.text3,fontSize:10}} axisLine={false} tickLine={false}/>
                   <Tooltip contentStyle={TT_STYLE} formatter={(v,n)=>[`₹${v} Cr`,n]}/>
                   <Legend content={renderLegend}/>
-                  <Bar dataKey="Demand"      fill="url(#gD3)" radius={[6,6,0,0]} animationDuration={1200}><LabelList dataKey="Demand"      position="top" style={{fontSize:10,fontWeight:700,fill:C.blue}}    formatter={v=>`${v}`}/></Bar>
-                  <Bar dataKey="Received"    fill="url(#gR3)" radius={[6,6,0,0]} animationDuration={1300}><LabelList dataKey="Received"    position="top" style={{fontSize:10,fontWeight:700,fill:C.brownDk}} formatter={v=>`${v}`}/></Bar>
-                  <Bar dataKey="Outstanding" fill="url(#gO3)" radius={[6,6,0,0]} animationDuration={1400}><LabelList dataKey="Outstanding" position="top" style={{fontSize:10,fontWeight:700,fill:C.rose}}    formatter={v=>`${v}`}/></Bar>
+                  <Bar dataKey="Demand"      fill="url(#gD3)" color={GRADIENTS.blue[0]}  legendType="square" radius={[6,6,0,0]} animationDuration={1200}><LabelList dataKey="Demand"      position="top" style={{fontSize:10,fontWeight:700,fill:C.blue}}    formatter={v=>`${v}`}/></Bar>
+                  <Bar dataKey="Received"    fill="url(#gR3)" color={GRADIENTS.brown[0]} legendType="square" radius={[6,6,0,0]} animationDuration={1300}><LabelList dataKey="Received"    position="top" style={{fontSize:10,fontWeight:700,fill:C.brownDk}} formatter={v=>`${v}`}/></Bar>
+                  <Bar dataKey="Outstanding" fill="url(#gO3)" color={GRADIENTS.rose[0]}  legendType="square" radius={[6,6,0,0]} animationDuration={1400}><LabelList dataKey="Outstanding" position="top" style={{fontSize:10,fontWeight:700,fill:C.rose}}    formatter={v=>`${v}`}/></Bar>
                 </BarChart>
               </ResponsiveContainer>
             </GlassCard>
