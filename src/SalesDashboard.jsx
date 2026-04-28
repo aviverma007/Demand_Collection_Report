@@ -301,7 +301,7 @@ export default function Dashboard() {
 
             {/* Monthly: gradient bars + line */}
             <GlassCard title="Monthly Demand vs Received" icon={<Activity size={15}/>} color={C.brownDk} delay={0.4} wide>
-              <ResponsiveContainer width="100%" height={290}>
+              <ResponsiveContainer width="100%" height={280}>
                 <ComposedChart data={data.monthly} margin={{top:18,right:22,left:5,bottom:20}}>
                   <defs>
                     <linearGradient id="gDemandBar" x1="0" y1="0" x2="0" y2="1">
@@ -352,7 +352,7 @@ export default function Dashboard() {
 
             {/* Tower Collection Rate */}
             <GlassCard title="Tower Collection Rate" icon={<BarChart3 size={15}/>} color={C.blue} delay={0.2}>
-              <ResponsiveContainer width="100%" height={250}>
+              <ResponsiveContainer width="100%" height={260}>
                 <BarChart data={data.tower_list} margin={{top:22,right:10,left:0,bottom:0}}>
                   <CartesianGrid strokeDasharray="4 4" stroke="rgba(30,58,95,0.07)" vertical={false}/>
                   <XAxis dataKey="tower" tick={{fill:C.text3,fontSize:12,fontWeight:700}} axisLine={false} tickLine={false}/>
@@ -371,7 +371,7 @@ export default function Dashboard() {
 
             {/* Tower Financial Breakdown */}
             <GlassCard title="Tower Financial Breakdown" icon={<BarChart3 size={15}/>} color={C.blue} delay={0.5} wide>
-              <ResponsiveContainer width="100%" height={290}>
+              <ResponsiveContainer width="100%" height={280}>
                 <BarChart data={towerFin} margin={{top:22,right:20,left:0,bottom:0}} barGap={3} barCategoryGap="26%">
                   <defs>
                     <linearGradient id="gDemand2" x1="0" y1="0" x2="0" y2="1">
@@ -425,7 +425,7 @@ export default function Dashboard() {
           <div className="charts-grid">
 
             <GlassCard title="Installment Count by Ageing" icon={<BarChart3 size={15}/>} color={C.blue} delay={0.1}>
-              <ResponsiveContainer width="100%" height={290}>
+              <ResponsiveContainer width="100%" height={260}>
                 <BarChart data={ageCountArr} margin={{top:24,right:10,left:0,bottom:0}}>
                   <CartesianGrid strokeDasharray="4 4" stroke="rgba(30,58,95,0.07)" vertical={false}/>
                   <XAxis dataKey="name" tick={{fill:C.text3,fontSize:10,fontWeight:600}} axisLine={false} tickLine={false}/>
@@ -443,7 +443,7 @@ export default function Dashboard() {
             </GlassCard>
 
             <GlassCard title="Outstanding Amount by Ageing" icon={<IndianRupee size={15}/>} color={C.rose} delay={0.2}>
-              <ResponsiveContainer width="100%" height={290}>
+              <ResponsiveContainer width="100%" height={260}>
                 <BarChart data={ageAmtArr} margin={{top:24,right:10,left:0,bottom:0}}>
                   <CartesianGrid strokeDasharray="4 4" stroke="rgba(30,58,95,0.07)" vertical={false}/>
                   <XAxis dataKey="name" tick={{fill:C.text3,fontSize:10,fontWeight:600}} axisLine={false} tickLine={false}/>
@@ -461,7 +461,7 @@ export default function Dashboard() {
             </GlassCard>
 
             <GlassCard title="Ageing Distribution" icon={<PieIcon size={15}/>} color={C.gold} delay={0.3}>
-              <ResponsiveContainer width="100%" height={290}>
+              <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
                   <Pie data={ageAmtArr.filter(d=>d.amount>0)} cx="50%" cy="48%"
                     outerRadius={100} innerRadius={50} dataKey="amount" nameKey="name"
@@ -486,7 +486,7 @@ export default function Dashboard() {
         <div className="tab-content">
           <div className="charts-grid">
             <GlassCard title="Unbilled Milestone Count by Milestone" icon={<BarChart3 size={15}/>} color={C.blue} delay={0.1} wide>
-              <ResponsiveContainer width="100%" height={340}>
+              <ResponsiveContainer width="100%" height={320}>
                 <BarChart data={data.top_unbilled_count} layout="vertical" margin={{top:5,right:85,left:8,bottom:5}}>
                   <defs>
                     <linearGradient id="gUnbilledCount" x1="0" y1="0" x2="1" y2="0">
@@ -507,7 +507,7 @@ export default function Dashboard() {
             </GlassCard>
 
             <GlassCard title="Unbilled Amount by Milestone" icon={<IndianRupee size={15}/>} color={C.brownLt} delay={0.2} wide>
-              <ResponsiveContainer width="100%" height={340}>
+              <ResponsiveContainer width="100%" height={320}>
                 <BarChart data={data.top_unbilled_amount} layout="vertical" margin={{top:5,right:95,left:8,bottom:5}}>
                   <defs>
                     <linearGradient id="gUnbilledAmt" x1="0" y1="0" x2="1" y2="0">
@@ -555,7 +555,7 @@ export default function Dashboard() {
           </div>
           <div className="charts-grid">
             <GlassCard title="Tower Financial Breakdown" icon={<BarChart3 size={15}/>} color={C.blue} delay={0.2} wide>
-              <ResponsiveContainer width="100%" height={310}>
+              <ResponsiveContainer width="100%" height={280}>
                 <BarChart data={towerFin} margin={{top:24,right:20,left:0,bottom:0}} barGap={3} barCategoryGap="26%">
                   <defs>
                     <linearGradient id="gD3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={GRADIENTS.blue[0]} stopOpacity={0.9}/><stop offset="100%" stopColor={GRADIENTS.blue[1]} stopOpacity={0.7}/></linearGradient>
@@ -579,7 +579,7 @@ export default function Dashboard() {
             </GlassCard>
 
             <GlassCard title="Outstanding by Tower" icon={<PieIcon size={15}/>} color={C.rose} delay={0.3}>
-              <ResponsiveContainer width="100%" height={290}>
+              <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
                   <Pie data={data.tower_list} cx="50%" cy="48%" outerRadius={100} innerRadius={45}
                     dataKey="outstanding" nameKey="tower" paddingAngle={4} stroke="#fff" strokeWidth={2} animationDuration={1200}
