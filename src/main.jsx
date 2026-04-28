@@ -4,7 +4,5 @@ import SalesDashboard from './SalesDashboard.jsx'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <SalesDashboard />
-  </React.StrictMode>,
+  <React.StrictMode><SalesDashboard /></React.StrictMode>
 )
