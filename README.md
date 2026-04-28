@@ -1,16 +1,34 @@
-# React + Vite
+# Smartworld Sky Arc — Sales & Payment Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Professional real estate demand & collection analytics dashboard for Smartworld Sky Arc project.
 
-Currently, two official plugins are available:
+## Features
+- **Ageing Analysis** – Buckets: 1–30 / 31–90 / 91–180 / 181+ days (DAX formula)
+- **Unbilled Milestones** – Count & amount by milestone (Demand No = blank)
+- **12+ Charts** – Area, Bar, Pie, Radar, Composed, Horizontal Bar
+- **Tower Breakdown** – Demand, Received, Outstanding, Collection Rate
+- **Paginated Milestone Table** – All 213 milestones with ageing badges
+- **Tab Navigation** – Overview · Ageing · Milestones · Towers
+- **3D Card Effects** – Perspective hover animations throughout
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Quick Start
+```bash
+npm install
+npm run dev        # http://localhost:5173
+npm run build      # production build
+```
 
-## React Compiler
+## Key Metrics
+| Metric | Value |
+|---|---|
+| Total Units | 893 |
+| Sales Orders | 893 |
+| Total Demand | ₹1,574.34 Cr |
+| Received | ₹1,081.90 Cr |
+| Outstanding | ₹492.44 Cr |
+| Collection Rate | 68.77% |
+| Billed | 3,496 |
+| Unbilled | 8,582 |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+React 19 · Vite · Recharts · Outfit + Space Mono fonts · CSS3 3D transforms
