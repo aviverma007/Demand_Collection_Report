@@ -7,12 +7,9 @@
 :root {
   --primary: #1e3a8a;
   --primary-light: #3b82f6;
-  --primary-dark: #0f172a;
   --secondary: #8b5a3c;
   --secondary-light: #d4a574;
   --accent: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
   --white: #ffffff;
   --light: #f8f9fa;
   --gray: #e9ecef;
@@ -45,7 +42,8 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .header-title h1 {
@@ -63,65 +61,21 @@ html, body {
   display: flex;
   gap: 15px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .live-badge {
   background: rgba(16, 185, 129, 0.3);
   padding: 6px 12px;
   border-radius: 20px;
-  font-size: 0.9em;
+  font-size: 0.85em;
   font-weight: 700;
   color: #10b981;
 }
 
 .record-count {
-  font-size: 0.95em;
+  font-size: 0.9em;
   opacity: 0.9;
-}
-
-/* FILTERS */
-.filters-bar {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.filter-select {
-  padding: 8px 12px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.filter-select:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
-.filter-select option {
-  background: #1e3a8a;
-  color: white;
-}
-
-.reset-btn {
-  padding: 8px 16px;
-  background: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 700;
-  transition: all 0.2s;
-}
-
-.reset-btn:hover {
-  background: #dc2626;
-  transform: translateY(-2px);
 }
 
 /* KPI SECTION */
@@ -143,9 +97,9 @@ html, body {
   align-items: center;
   gap: 12px;
   box-shadow: 0 4px 15px rgba(30, 58, 138, 0.1);
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  transition: all 0.3s ease;
   border-left: 4px solid var(--primary);
-  animation: slideUp 0.5s ease-out;
+  animation: slideUp 0.5s ease-out backwards;
 }
 
 @keyframes slideUp {
@@ -159,20 +113,19 @@ html, body {
   }
 }
 
-.kpi-1 { border-left-color: #3b82f6; animation-delay: 0.05s; }
-.kpi-2 { border-left-color: #10b981; animation-delay: 0.1s; }
-.kpi-3 { border-left-color: #f59e0b; animation-delay: 0.15s; }
-.kpi-4 { border-left-color: #8b5cf6; animation-delay: 0.2s; }
-.kpi-5 { border-left-color: #06b6d4; animation-delay: 0.25s; }
-.kpi-6 { border-left-color: #ef4444; animation-delay: 0.3s; }
+.kpi-1 { animation-delay: 0.05s; }
+.kpi-2 { animation-delay: 0.1s; }
+.kpi-3 { animation-delay: 0.15s; }
+.kpi-4 { animation-delay: 0.2s; }
+.kpi-5 { animation-delay: 0.25s; }
+.kpi-6 { animation-delay: 0.3s; }
 
 .kpi-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 10px 30px rgba(30, 58, 138, 0.2);
 }
 
-.kpi-icon {
-  font-size: 24px;
+.kpi-card svg {
   color: var(--primary);
   flex-shrink: 0;
 }
@@ -200,8 +153,8 @@ html, body {
   color: #999;
 }
 
-/* AGEING SECTION */
-.ageing-section {
+/* CHARTS SECTION */
+.charts-section {
   max-width: 1400px;
   margin: 0 auto 20px;
   padding: 0 15px;
@@ -214,61 +167,10 @@ html, body {
   font-weight: 800;
 }
 
-.ageing-cards {
+.chart-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
-}
-
-.ageing-card {
-  background: white;
-  padding: 16px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(30, 58, 138, 0.1);
-  transition: all 0.3s ease;
-}
-
-.ageing-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(30, 58, 138, 0.15);
-}
-
-.ageing-card h4 {
-  font-size: 0.95em;
-  color: #1e3a8a;
-  margin-bottom: 10px;
-  font-weight: 700;
-}
-
-.ageing-count {
-  font-size: 2em;
-  font-weight: 800;
-  color: #1e3a8a;
-  margin-bottom: 4px;
-}
-
-.ageing-amount {
-  font-size: 0.9em;
-  color: #8b5a3c;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.ageing-bar {
-  height: 4px;
-  background: #e9ecef;
-  border-radius: 2px;
-  transition: width 0.5s ease;
-}
-
-/* CHARTS SECTION */
-.charts-section {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 15px;
-  margin: 20px auto;
-  max-width: 1400px;
-  padding: 0 15px;
 }
 
 .chart-card {
@@ -284,7 +186,7 @@ html, body {
 }
 
 .chart-card h3 {
-  font-size: 1em;
+  font-size: 0.95em;
   margin-bottom: 12px;
   color: #1e3a8a;
   font-weight: 700;
@@ -336,32 +238,23 @@ table tbody tr:hover {
   background: #f9fafb;
 }
 
-.so-cell {
+.milestone-cell {
   font-weight: 700;
   color: #1e3a8a;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ageing-badge {
   padding: 4px 8px;
+  background: rgba(251, 158, 11, 0.2);
+  color: #92400e;
   border-radius: 4px;
   font-weight: 700;
   font-size: 10px;
 }
-
-.ageing-130 { background: rgba(16, 185, 129, 0.2); color: #047857; }
-.ageing-3190 { background: rgba(251, 158, 11, 0.2); color: #92400e; }
-.ageing-91180 { background: rgba(239, 68, 68, 0.2); color: #991b1b; }
-.ageing-181Days { background: rgba(124, 58, 237, 0.2); color: #581c87; }
-
-.status-badge {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: 700;
-  font-size: 10px;
-}
-
-.status-badge.billed { background: rgba(16, 185, 129, 0.15); color: #047857; }
-.status-badge.unbilled { background: rgba(239, 68, 68, 0.15); color: #991b1b; }
 
 /* FOOTER */
 .dashboard-footer {
@@ -374,10 +267,8 @@ table tbody tr:hover {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
-  .header-top {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+  .dashboard-header {
+    padding: 15px;
   }
 
   .header-title h1 {
@@ -388,7 +279,7 @@ table tbody tr:hover {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .charts-section {
+  .chart-grid {
     grid-template-columns: 1fr;
   }
 
@@ -404,8 +295,9 @@ table tbody tr:hover {
 /* RECHARTS CUSTOM */
 .recharts-tooltip {
   background: white !important;
-  border: 1px solid #ddd !important;
+  border: 2px solid #3b82f6 !important;
   border-radius: 6px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
 }
 
 .recharts-text {
