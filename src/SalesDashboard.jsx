@@ -39,21 +39,18 @@ const TT_STYLE = {
   boxShadow:'0 10px 40px rgba(0,0,0,0.12)', padding:'10px 14px',
 };
 
-/* ─── Excel parser ─────────────────────────────────────── */
+/* ─── helpers ──────────────────────────────────────────── */
 function parseDate(v) {
   if (!v) return null;
-  if (v instanceof Date) return v;
-  if (typeof v === 'number') return XLSX.SSF.parse_date_code ? new Date((v - 25569) * 86400000) : null;
+  if (v instanceof Date) return isNaN(v) ? null : v;
+  if (typeof v === 'number') return new Date(Math.round((v - 25569) * 86400000));
   const d = new Date(v);
   return isNaN(d) ? null : d;
 }
-
 function daysSince(d) {
   if (!d) return null;
-  const diff = (Date.now() - d.getTime()) / 86400000;
-  return diff;
+  return (Date.now() - d.getTime()) / 86400000;
 }
-
 function bucketLabel(days) {
   if (days === null || days < 0) return 'Not Yet Due';
   if (days <= 30)  return '1–30 Days';
@@ -61,138 +58,134 @@ function bucketLabel(days) {
   if (days <= 180) return '91–180 Days';
   return '181+ Days';
 }
-
-function buildData(rows) {
-  /* rows = array of plain objects from XLSX */
-  const today = new Date();
-
-  // parse columns once
-  const parsed = rows.map(r => ({
-    ...r,
-    _billDate:   parseDate(r['Bill creation date']),
-    _sapDate:    parseDate(r['SAP Booking date']),
-    _demand:     Number(r['Total Demand With Tax']) || 0,
-    _received:   Number(r['Received Amt (in Bank)']) || 0,
-    _outstanding:Number(r['Outstanding Amount']) || 0,
-    _isBilled:   r['Demand No'] !== null && r['Demand No'] !== undefined && r['Demand No'] !== '',
-    _tower:      String(r['Tower'] || ''),
-    _milestone:  String(r['Milestone'] || ''),
-    _unit:       String(r['Unit Number'] || ''),
-    _project:    String(r['Project Name'] || ''),
-    _company:    String(r['Company Name'] || ''),
-    _salesOrder: String(r['Sale order No'] || ''),
-  }));
-
-  function compute(subset) {
-    const totalDemand      = subset.reduce((s,r) => s + r._demand, 0);
-    const totalReceived    = subset.reduce((s,r) => s + r._received, 0);
-    const totalOutstanding = subset.reduce((s,r) => s + r._outstanding, 0);
-    const billed           = subset.filter(r => r._isBilled);
-    const unbilled         = subset.filter(r => !r._isBilled);
-
-    /* ageing – billed rows only */
-    const ageing = {};
-    BUCKET_ORDER.forEach(b => { ageing[b] = { count:0, amount:0 }; });
-    billed.forEach(r => {
-      const days = daysSince(r._billDate);
-      const b = bucketLabel(days);
-      ageing[b].count++;
-      ageing[b].amount += r._outstanding;
-    });
-    BUCKET_ORDER.forEach(b => { ageing[b].amount = round(ageing[b].amount / CR); });
-
-    /* milestone list */
-    const msMap = {};
-    subset.forEach(r => {
-      const key = r._milestone || '(Unknown)';
-      if (!msMap[key]) msMap[key] = { name:key, billed_count:0, billed_amount:0, unbilled_count:0, unbilled_amount:0, bucketCounts:{} };
-      const m = msMap[key];
-      if (r._isBilled) { m.billed_count++; m.billed_amount += r._demand;
-        const days = daysSince(r._billDate);
-        const b = bucketLabel(days);
-        m.bucketCounts[b] = (m.bucketCounts[b]||0) + 1;
-      } else { m.unbilled_count++; m.unbilled_amount += r._demand; }
-    });
-    const milestone_list = Object.values(msMap).map(m => ({
-      name: m.name,
-      billed_count: m.billed_count,
-      billed_amount: round(m.billed_amount / CR),
-      unbilled_count: m.unbilled_count,
-      unbilled_amount: round(m.unbilled_amount / CR),
-      ageing_bucket: m.billed_count > 0
-        ? Object.entries(m.bucketCounts).sort((a,b)=>b[1]-a[1])[0][0]
-        : 'Not Yet Due',
-    })).sort((a,b) => (b.billed_count + b.unbilled_count) - (a.billed_count + a.unbilled_count));
-
-    const top_unbilled_count  = [...milestone_list].filter(m=>m.unbilled_count>0).sort((a,b)=>b.unbilled_count-a.unbilled_count).slice(0,10);
-    const top_unbilled_amount = [...milestone_list].filter(m=>m.unbilled_amount>0).sort((a,b)=>b.unbilled_amount-a.unbilled_amount).slice(0,10);
-    const top_billed          = [...milestone_list].filter(m=>m.billed_count>0).sort((a,b)=>b.billed_count-a.billed_count).slice(0,10);
-
-    /* tower list */
-    const twMap = {};
-    subset.forEach(r => {
-      const t = r._tower || 'Unknown';
-      if (!twMap[t]) twMap[t] = { tower:t, demand:0, received:0, outstanding:0 };
-      twMap[t].demand      += r._demand;
-      twMap[t].received    += r._received;
-      twMap[t].outstanding += r._outstanding;
-    });
-    const tower_list = Object.values(twMap).map(t => ({
-      tower: t.tower,
-      demand:      round(t.demand / CR),
-      received:    round(t.received / CR),
-      outstanding: round(t.outstanding / CR),
-      collection_rate: t.demand ? round(t.received / t.demand * 100) : 0,
-    })).sort((a,b) => b.demand - a.demand);
-
-    /* monthly */
-    const monMap = {};
-    subset.forEach(r => {
-      if (!r._sapDate) return;
-      const key = `${r._sapDate.getFullYear()}-${String(r._sapDate.getMonth()+1).padStart(2,'0')}`;
-      if (!monMap[key]) monMap[key] = { demand:0, received:0 };
-      monMap[key].demand   += r._demand;
-      monMap[key].received += r._received;
-    });
-    const monthly = Object.entries(monMap).sort(([a],[b])=>a.localeCompare(b)).map(([key,v]) => {
-      const [yr,mo] = key.split('-');
-      const d = new Date(Number(yr), Number(mo)-1, 1);
-      return {
-        month: d.toLocaleDateString('en-IN',{month:'short',year:'numeric'}),
-        demand:   round(v.demand / CR),
-        received: round(v.received / CR),
-      };
-    });
-
-    const projects  = [...new Set(subset.map(r=>r._project).filter(Boolean))].sort();
-    const companies = [...new Set(subset.map(r=>r._company).filter(Boolean))].sort();
-
-    return {
-      summary: {
-        total_records:      subset.length,
-        total_units:        new Set(subset.map(r=>r._unit)).size,
-        total_sales_orders: new Set(subset.map(r=>r._salesOrder)).size,
-        total_milestones:   new Set(subset.map(r=>r._milestone)).size,
-        total_towers:       new Set(subset.map(r=>r._tower)).size,
-        total_demand_cr:    round(totalDemand / CR),
-        total_received_cr:  round(totalReceived / CR),
-        total_outstanding_cr: round(totalOutstanding / CR),
-        collection_rate:    totalDemand ? round(totalReceived / totalDemand * 100) : 0,
-        billed_count:       billed.length,
-        unbilled_count:     unbilled.length,
-        projects, companies,
-      },
-      ageing, milestone_list, top_unbilled_count, top_unbilled_amount, top_billed,
-      tower_list, monthly,
-    };
-  }
-
-  return { parsed, compute };
-}
-
 function round(n) { return Math.round(n * 100) / 100; }
 
-/* ─── sub-components ───────────────────────────────────── */
+/* ─── Core compute — runs on any subset of parsed rows ── */
+function computeDash(parsed) {
+  const totalDemand      = parsed.reduce((s,r) => s + r._demand, 0);
+  const totalReceived    = parsed.reduce((s,r) => s + r._received, 0);
+  const totalOutstanding = parsed.reduce((s,r) => s + r._outstanding, 0);
+  const billed           = parsed.filter(r => r._isBilled);
+  const unbilled         = parsed.filter(r => !r._isBilled);
+
+  /* ageing – billed rows only */
+  const ageing = {};
+  BUCKET_ORDER.forEach(b => { ageing[b] = { count:0, amount:0 }; });
+  billed.forEach(r => {
+    const b = bucketLabel(daysSince(r._billDate));
+    ageing[b].count++;
+    ageing[b].amount += r._outstanding;
+  });
+  BUCKET_ORDER.forEach(b => { ageing[b].amount = round(ageing[b].amount / CR); });
+
+  /* milestone list */
+  const msMap = {};
+  parsed.forEach(r => {
+    const key = r._milestone || '(Unknown)';
+    if (!msMap[key]) msMap[key] = { name:key, billed_count:0, billed_amount:0, unbilled_count:0, unbilled_amount:0, bucketCounts:{} };
+    const m = msMap[key];
+    if (r._isBilled) {
+      m.billed_count++; m.billed_amount += r._demand;
+      const b = bucketLabel(daysSince(r._billDate));
+      m.bucketCounts[b] = (m.bucketCounts[b]||0) + 1;
+    } else {
+      m.unbilled_count++; m.unbilled_amount += r._demand;
+    }
+  });
+  const milestone_list = Object.values(msMap).map(m => ({
+    name: m.name,
+    billed_count:    m.billed_count,
+    billed_amount:   round(m.billed_amount / CR),
+    unbilled_count:  m.unbilled_count,
+    unbilled_amount: round(m.unbilled_amount / CR),
+    ageing_bucket: m.billed_count > 0
+      ? Object.entries(m.bucketCounts).sort((a,b)=>b[1]-a[1])[0][0]
+      : 'Not Yet Due',
+  })).sort((a,b) => (b.billed_count + b.unbilled_count) - (a.billed_count + a.unbilled_count));
+
+  const top_unbilled_count  = [...milestone_list].filter(m=>m.unbilled_count>0).sort((a,b)=>b.unbilled_count-a.unbilled_count).slice(0,10);
+  const top_unbilled_amount = [...milestone_list].filter(m=>m.unbilled_amount>0).sort((a,b)=>b.unbilled_amount-a.unbilled_amount).slice(0,10);
+  const top_billed          = [...milestone_list].filter(m=>m.billed_count>0).sort((a,b)=>b.billed_count-a.billed_count).slice(0,10);
+
+  /* tower list */
+  const twMap = {};
+  parsed.forEach(r => {
+    const t = r._tower || 'Unknown';
+    if (!twMap[t]) twMap[t] = { tower:t, demand:0, received:0, outstanding:0 };
+    twMap[t].demand      += r._demand;
+    twMap[t].received    += r._received;
+    twMap[t].outstanding += r._outstanding;
+  });
+  const tower_list = Object.values(twMap).map(t => ({
+    tower: t.tower,
+    demand:          round(t.demand / CR),
+    received:        round(t.received / CR),
+    outstanding:     round(t.outstanding / CR),
+    collection_rate: t.demand ? round(t.received / t.demand * 100) : 0,
+  })).sort((a,b) => b.demand - a.demand);
+
+  /* monthly */
+  const monMap = {};
+  parsed.forEach(r => {
+    if (!r._sapDate) return;
+    const key = `${r._sapDate.getFullYear()}-${String(r._sapDate.getMonth()+1).padStart(2,'0')}`;
+    if (!monMap[key]) monMap[key] = { demand:0, received:0 };
+    monMap[key].demand   += r._demand;
+    monMap[key].received += r._received;
+  });
+  const monthly = Object.entries(monMap).sort(([a],[b])=>a.localeCompare(b)).map(([key,v]) => {
+    const [yr,mo] = key.split('-');
+    const d = new Date(Number(yr), Number(mo)-1, 1);
+    return {
+      month:    d.toLocaleDateString('en-IN',{month:'short',year:'numeric'}),
+      demand:   round(v.demand / CR),
+      received: round(v.received / CR),
+    };
+  });
+
+  return {
+    summary: {
+      total_records:        parsed.length,
+      total_units:          new Set(parsed.map(r=>r._unit)).size,
+      total_sales_orders:   new Set(parsed.map(r=>r._salesOrder)).size,
+      total_milestones:     new Set(parsed.map(r=>r._milestone)).size,
+      total_towers:         new Set(parsed.map(r=>r._tower)).size,
+      total_demand_cr:      round(totalDemand / CR),
+      total_received_cr:    round(totalReceived / CR),
+      total_outstanding_cr: round(totalOutstanding / CR),
+      collection_rate:      totalDemand ? round(totalReceived / totalDemand * 100) : 0,
+      billed_count:         billed.length,
+      unbilled_count:       unbilled.length,
+    },
+    ageing, milestone_list, top_unbilled_count, top_unbilled_amount, top_billed,
+    tower_list, monthly,
+  };
+}
+
+/* ─── Parse raw Excel rows once ─────────────────────────── */
+function parseRows(rawRows) {
+  return rawRows.map(r => {
+    const demandNo = r['Demand No'];
+    const isBilled = demandNo !== null && demandNo !== undefined && demandNo !== '' && demandNo !== 0;
+    return {
+      _raw:         r,
+      _billDate:    parseDate(r['Bill creation date']),
+      _sapDate:     parseDate(r['SAP Booking date']),
+      _demand:      Number(r['Total Demand With Tax'])   || 0,
+      _received:    Number(r['Received Amt (in Bank)'])  || 0,
+      _outstanding: Number(r['Outstanding Amount'])       || 0,
+      _isBilled:    isBilled,
+      _tower:       String(r['Tower']          || '').trim(),
+      _milestone:   String(r['Milestone']      || '').trim(),
+      _unit:        String(r['Unit Number']    || '').trim(),
+      _project:     String(r['Project Name']   || '').trim(),
+      _company:     String(r['Company Name']   || '').trim(),
+      _salesOrder:  String(r['Sale order No']  || '').trim(),
+    };
+  });
+}
+
+/* ─── Sub-components ────────────────────────────────────── */
 function ChartLegend({ items }) {
   return (
     <div style={{ display:'flex', flexWrap:'wrap', justifyContent:'center', gap:'8px 18px', paddingTop:10 }}>
@@ -275,9 +268,9 @@ function BilledCard({ type, count, color, delay, onClick, previewRows }) {
   const [hovered, setHovered] = useState(false);
   const [showPrev, setShowPrev] = useState(false);
   const isBilled = type === 'billed';
-  const label = isBilled ? 'BILLED' : 'UNBILLED';
-  const sub   = isBilled ? 'Invoices raised' : 'Pending invoicing';
-  const icon  = isBilled ? '🧾' : '🔔';
+  const label    = isBilled ? 'BILLED' : 'UNBILLED';
+  const sub      = isBilled ? 'Invoices raised' : 'Pending invoicing';
+  const icon     = isBilled ? '🧾' : '🔔';
   const countKey = isBilled ? 'billed_count'  : 'unbilled_count';
   const amtKey   = isBilled ? 'billed_amount' : 'unbilled_amount';
   let hoverTimer = null;
@@ -361,6 +354,8 @@ function GlassCard({ title, icon, color='var(--blue)', children, wide, delay=0 }
 function MsTable({ rows }) {
   const [page, setPage] = useState(0);
   const PER=8, pages=Math.ceil(rows.length/PER), slice=rows.slice(page*PER,(page+1)*PER);
+  // reset page when rows change (filter applied)
+  useEffect(() => { setPage(0); }, [rows]);
   return (
     <div className="slide-wrap">
       <table className="ms-table">
@@ -389,27 +384,28 @@ function MsTable({ rows }) {
   );
 }
 
-/* ─── Main Dashboard ───────────────────────────────────── */
+/* ─── Main Dashboard ─────────────────────────────────────── */
 export default function Dashboard() {
-  const [allRows, setAllRows]     = useState(null);   // parsed Excel rows
-  const [loading, setLoading]     = useState(true);
-  const [error, setError]         = useState(null);
-  const [tab, setTab]             = useState('overview');
-  const [fp, setFp]               = useState('All');
-  const [fc, setFc]               = useState('All');
-  const [modal, setModal]         = useState(null);
+  const [parsedRows, setParsedRows] = useState(null); // parsed once from Excel
+  const [loading, setLoading]       = useState(true);
+  const [error, setError]           = useState(null);
+  const [tab, setTab]               = useState('overview');
+  const [fp, setFp]                 = useState('All');  // project filter
+  const [fc, setFc]                 = useState('All');  // company filter
+  const [ft, setFt]                 = useState('All');  // tower filter
+  const [modal, setModal]           = useState(null);
 
-  /* Load Excel on mount */
+  /* ── Load & parse Excel once ── */
   const loadExcel = useCallback(async () => {
     setLoading(true); setError(null);
     try {
       const res = await fetch('/data/dapp_final.xlsx?t=' + Date.now());
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status} — could not load Excel file`);
       const buf  = await res.arrayBuffer();
       const wb   = XLSX.read(buf, { type:'array', cellDates:true });
       const ws   = wb.Sheets[wb.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json(ws, { defval:'' });
-      setAllRows(rows);
+      const raw  = XLSX.utils.sheet_to_json(ws, { defval:null });
+      setParsedRows(parseRows(raw));
     } catch(e) {
       setError(e.message);
     } finally {
@@ -419,30 +415,32 @@ export default function Dashboard() {
 
   useEffect(() => { loadExcel(); }, [loadExcel]);
 
-  /* Filter rows based on selected project / company */
-  const filteredRows = useMemo(() => {
-    if (!allRows) return [];
-    return allRows.filter(r => {
-      const proj = String(r['Project Name'] || '');
-      const comp = String(r['Company Name'] || '');
-      if (fp !== 'All' && proj !== fp) return false;
-      if (fc !== 'All' && comp !== fc) return false;
+  /* ── Dropdown options (always from full dataset) ── */
+  const allProjects  = useMemo(() => parsedRows ? [...new Set(parsedRows.map(r=>r._project).filter(Boolean))].sort() : [], [parsedRows]);
+  const allCompanies = useMemo(() => parsedRows ? [...new Set(parsedRows.map(r=>r._company).filter(Boolean))].sort() : [], [parsedRows]);
+  const allTowers    = useMemo(() => parsedRows ? [...new Set(parsedRows.map(r=>r._tower).filter(Boolean))].sort() : [], [parsedRows]);
+
+  /* ── Filter parsed rows ── */
+  const filtered = useMemo(() => {
+    if (!parsedRows) return [];
+    return parsedRows.filter(r => {
+      if (fp !== 'All' && r._project !== fp) return false;
+      if (fc !== 'All' && r._company !== fc) return false;
+      if (ft !== 'All' && r._tower   !== ft) return false;
       return true;
     });
-  }, [allRows, fp, fc]);
+  }, [parsedRows, fp, fc, ft]);
 
-  /* Compute dashboard data from filtered rows */
-  const dashData = useMemo(() => {
-    if (!filteredRows.length) return null;
-    const { parsed, compute } = buildData(filteredRows);
-    return compute(parsed);
-  }, [filteredRows]);
+  /* ── Compute all dashboard metrics from filtered rows ── */
+  const dash = useMemo(() => {
+    if (!filtered.length) return null;
+    return computeDash(filtered);
+  }, [filtered]);
 
-  /* All projects/companies from full data (for dropdowns) */
-  const allProjects  = useMemo(() => allRows ? [...new Set(allRows.map(r=>String(r['Project Name']||'')).filter(Boolean))].sort() : [], [allRows]);
-  const allCompanies = useMemo(() => allRows ? [...new Set(allRows.map(r=>String(r['Company Name']||'')).filter(Boolean))].sort() : [], [allRows]);
+  const resetFilters = () => { setFp('All'); setFc('All'); setFt('All'); };
+  const isFiltered   = fp !== 'All' || fc !== 'All' || ft !== 'All';
 
-  /* ── Loading / Error states ── */
+  /* ── Loading ── */
   if (loading) return (
     <div style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', height:'100vh', background:'linear-gradient(135deg,#f5f0e8,#e8ddd0)', gap:20 }}>
       <div style={{ width:48, height:48, border:`4px solid ${C.blue}20`, borderTop:`4px solid ${C.blue}`, borderRadius:'50%', animation:'spin 1s linear infinite' }}/>
@@ -451,32 +449,39 @@ export default function Dashboard() {
     </div>
   );
 
+  /* ── Error ── */
   if (error) return (
     <div style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', height:'100vh', background:'linear-gradient(135deg,#f5f0e8,#e8ddd0)', gap:16 }}>
       <div style={{ fontSize:40 }}>⚠️</div>
       <div style={{ fontSize:18, color:C.rose, fontWeight:700 }}>Could not load Excel file</div>
       <div style={{ fontSize:13, color:C.text2, maxWidth:400, textAlign:'center' }}>{error}</div>
       <div style={{ fontSize:12, color:C.text3, background:'#fff', padding:'8px 16px', borderRadius:8, fontFamily:'monospace' }}>
-        Make sure <strong>data/dapp_final.xlsx</strong> exists in the repo
+        Ensure <strong>public/data/dapp_final.xlsx</strong> is in the repository
       </div>
       <button onClick={loadExcel} style={{ padding:'10px 24px', background:C.blue, color:'#fff', border:'none', borderRadius:8, cursor:'pointer', fontWeight:700 }}>Retry</button>
     </div>
   );
 
-  if (!dashData) return null;
+  /* ── No data after filter ── */
+  if (!dash) return (
+    <div style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', height:'100vh', background:'linear-gradient(135deg,#f5f0e8,#e8ddd0)', gap:16 }}>
+      <div style={{ fontSize:40 }}>🔍</div>
+      <div style={{ fontSize:18, color:C.brownDk, fontWeight:700 }}>No data matches current filters</div>
+      <button onClick={resetFilters} style={{ padding:'10px 24px', background:C.blue, color:'#fff', border:'none', borderRadius:8, cursor:'pointer', fontWeight:700 }}>Reset Filters</button>
+    </div>
+  );
 
-  const s = dashData.summary;
-  const billedRows   = dashData.milestone_list.filter(m=>m.billed_count>0).sort((a,b)=>b.billed_count-a.billed_count);
-  const unbilledRows = dashData.milestone_list.filter(m=>m.unbilled_count>0).sort((a,b)=>b.unbilled_count-a.unbilled_count);
-  const sortedMs     = dashData.milestone_list;
+  const s            = dash.summary;
+  const billedRows   = dash.milestone_list.filter(m=>m.billed_count>0).sort((a,b)=>b.billed_count-a.billed_count);
+  const unbilledRows = dash.milestone_list.filter(m=>m.unbilled_count>0).sort((a,b)=>b.unbilled_count-a.unbilled_count);
 
   const ageCountArr = BUCKET_ORDER.map(b => ({
-    name:b, count:dashData.ageing[b]?.count??0,
+    name:b, count:dash.ageing[b]?.count??0,
     fill:`url(#grad-bkt-${b.replace(/[^a-z0-9]/gi,'')})`,
     solidColor:BUCKET_COLORS[b],
   }));
   const ageAmtArr = BUCKET_ORDER.map(b => ({
-    name:b, amount:dashData.ageing[b]?.amount??0,
+    name:b, amount:dash.ageing[b]?.amount??0,
     fill:`url(#grad-bkt-${b.replace(/[^a-z0-9]/gi,'')})`,
     solidColor:BUCKET_COLORS[b],
   }));
@@ -484,7 +489,7 @@ export default function Dashboard() {
     {name:'Billed',  value:s.billed_count,  color:C.blue},
     {name:'Unbilled',value:s.unbilled_count, color:C.brownLt},
   ];
-  const towerFin = dashData.tower_list.map(t=>({name:t.tower,Demand:t.demand,Received:t.received,Outstanding:t.outstanding}));
+  const towerFin = dash.tower_list.map(t=>({name:t.tower,Demand:t.demand,Received:t.received,Outstanding:t.outstanding}));
 
   return (
     <div className="dashboard">
@@ -521,24 +526,31 @@ export default function Dashboard() {
       <div className="filters-bar">
         <div className="filter-group">
           <span className="filter-lbl">Project</span>
-          <select className="filter-select" value={fp} onChange={e=>{setFp(e.target.value);}}>
+          <select className="filter-select" value={fp} onChange={e => { setFp(e.target.value); setFt('All'); }}>
             <option value="All">All Projects</option>
-            {allProjects.map(p=><option key={p} value={p}>{p}</option>)}
+            {allProjects.map(p => <option key={p} value={p}>{p}</option>)}
           </select>
         </div>
         <div className="filter-group">
           <span className="filter-lbl">Company</span>
-          <select className="filter-select" value={fc} onChange={e=>{setFc(e.target.value);}}>
+          <select className="filter-select" value={fc} onChange={e => { setFc(e.target.value); setFt('All'); }}>
             <option value="All">All Companies</option>
-            {allCompanies.map(c=><option key={c} value={c}>{c}</option>)}
+            {allCompanies.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
-        <button className="reset-btn" onClick={()=>{setFp('All');setFc('All');}}>
+        <div className="filter-group">
+          <span className="filter-lbl">Tower</span>
+          <select className="filter-select" value={ft} onChange={e => setFt(e.target.value)}>
+            <option value="All">All Towers</option>
+            {allTowers.map(t => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </div>
+        <button className="reset-btn" onClick={resetFilters}>
           <RotateCcw size={13}/> Reset
         </button>
-        {(fp!=='All'||fc!=='All') && (
+        {isFiltered && (
           <span style={{ fontSize:11, color:C.brownLt, fontWeight:700, padding:'0 8px', alignSelf:'center' }}>
-            Showing {s.total_records.toLocaleString()} of {allRows.length.toLocaleString()} rows
+            Showing {s.total_records.toLocaleString()} of {parsedRows.length.toLocaleString()} rows
           </span>
         )}
       </div>
@@ -556,8 +568,8 @@ export default function Dashboard() {
         <KPI3D icon={<IndianRupee size={20}/>} label="Total Demand"  value={`₹${s.total_demand_cr} Crs`}    sub={`${s.total_records.toLocaleString()} installments`} color={C.brownLt} delay={1}/>
         <KPI3D icon={<Wallet size={20}/>}      label="Received"      value={`₹${s.total_received_cr} Crs`}  sub={`${s.collection_rate}% collected`} color={C.green}   delay={2} ring={parseFloat(s.collection_rate)}/>
         <KPI3D icon={<TrendingUp size={20}/>}  label="Outstanding"   value={`₹${s.total_outstanding_cr} Crs`} sub="Pending payment"                color={C.rose}    delay={3}/>
-        <BilledCard type="billed"   count={s.billed_count}   color={C.blue}   delay={4} onClick={()=>setModal('billed')}   previewRows={billedRows}/>
-        <BilledCard type="unbilled" count={s.unbilled_count} color={C.gold}   delay={5} onClick={()=>setModal('unbilled')} previewRows={unbilledRows}/>
+        <BilledCard type="billed"   count={s.billed_count}   color={C.blue} delay={4} onClick={()=>setModal('billed')}   previewRows={billedRows}/>
+        <BilledCard type="unbilled" count={s.unbilled_count} color={C.gold} delay={5} onClick={()=>setModal('unbilled')} previewRows={unbilledRows}/>
         <KPI3D icon={<Building2 size={20}/>}   label="Milestones"    value={s.total_milestones}             sub={`${s.total_towers} towers`}        color={C.brownDk} delay={6}/>
       </section>
 
@@ -567,7 +579,7 @@ export default function Dashboard() {
           <div className="charts-grid">
             <GlassCard title="Monthly Demand vs Received" icon={<Activity size={15}/>} color={C.brownDk} delay={0.4} wide>
               <ResponsiveContainer width="100%" height={280}>
-                <ComposedChart data={dashData.monthly} margin={{top:18,right:22,left:5,bottom:20}}>
+                <ComposedChart data={dash.monthly} margin={{top:18,right:22,left:5,bottom:20}}>
                   <defs>
                     <linearGradient id="gDemandBar" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%"   stopColor={GRADIENTS.demand[0]} stopOpacity={0.9}/>
@@ -609,18 +621,18 @@ export default function Dashboard() {
 
             <GlassCard title="Tower Collection Rate" icon={<BarChart3 size={15}/>} color={C.blue} delay={0.2}>
               <ResponsiveContainer width="100%" height={260}>
-                <BarChart data={dashData.tower_list} margin={{top:22,right:10,left:0,bottom:0}}>
+                <BarChart data={dash.tower_list} margin={{top:22,right:10,left:0,bottom:0}}>
                   <CartesianGrid strokeDasharray="4 4" stroke="rgba(30,58,95,0.07)" vertical={false}/>
                   <XAxis dataKey="tower" tick={{fill:C.text3,fontSize:12,fontWeight:700}} axisLine={false} tickLine={false}/>
-                  <YAxis domain={[0,Math.max(120,...dashData.tower_list.map(t=>t.collection_rate))]} unit="%" tick={{fill:C.text3,fontSize:10}} axisLine={false} tickLine={false}/>
+                  <YAxis domain={[0,Math.max(120,...dash.tower_list.map(t=>t.collection_rate))]} unit="%" tick={{fill:C.text3,fontSize:10}} axisLine={false} tickLine={false}/>
                   <Tooltip contentStyle={TT_STYLE} formatter={v=>[`${v}%`,'Collection Rate']}/>
                   <Bar dataKey="collection_rate" name="Collection Rate %" radius={[8,8,0,0]} animationDuration={1400}>
-                    {dashData.tower_list.map((_,i)=><Cell key={i} fill={`url(#grad-tower-${i%TOWER_GRAD.length})`}/>)}
+                    {dash.tower_list.map((_,i)=><Cell key={i} fill={`url(#grad-tower-${i%TOWER_GRAD.length})`}/>)}
                     <LabelList dataKey="collection_rate" position="top" formatter={v=>`${v}%`} style={{fontSize:11,fontWeight:700,fill:C.text}}/>
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
-              <ChartLegend items={dashData.tower_list.map((t,i)=>({label:t.tower,color:GRADIENTS[TOWER_GRAD[i%TOWER_GRAD.length]][0]}))}/>
+              <ChartLegend items={dash.tower_list.map((t,i)=>({label:t.tower,color:GRADIENTS[TOWER_GRAD[i%TOWER_GRAD.length]][0]}))}/>
             </GlassCard>
 
             <GlassCard title="Tower Financial Breakdown" icon={<BarChart3 size={15}/>} color={C.blue} delay={0.5} wide>
@@ -653,8 +665,8 @@ export default function Dashboard() {
             {Object.entries(BUCKET_COLORS).map(([b,c],i)=>(
               <div key={b} className="age-card" style={{'--bc':c,animationDelay:`${i*0.07}s`}}>
                 <div className="age-bkt">{b}</div>
-                <div className="age-count">{(dashData.ageing[b]?.count??0).toLocaleString()}</div>
-                <div className="age-amt">₹{(dashData.ageing[b]?.amount??0).toFixed(2)} Crs</div>
+                <div className="age-count">{(dash.ageing[b]?.count??0).toLocaleString()}</div>
+                <div className="age-amt">₹{(dash.ageing[b]?.amount??0).toFixed(2)} Crs</div>
               </div>
             ))}
           </div>
@@ -715,7 +727,7 @@ export default function Dashboard() {
           <div className="charts-grid">
             <GlassCard title="Unbilled Milestone Count by Milestone" icon={<BarChart3 size={15}/>} color={C.blue} delay={0.1} wide>
               <ResponsiveContainer width="100%" height={320}>
-                <BarChart data={dashData.top_unbilled_count} layout="vertical" margin={{top:5,right:85,left:8,bottom:5}}>
+                <BarChart data={dash.top_unbilled_count} layout="vertical" margin={{top:5,right:85,left:8,bottom:5}}>
                   <defs>
                     <linearGradient id="gUnbilledCount" x1="0" y1="0" x2="1" y2="0">
                       <stop offset="0%"   stopColor={GRADIENTS.blue[0]} stopOpacity={0.9}/>
@@ -736,7 +748,7 @@ export default function Dashboard() {
 
             <GlassCard title="Unbilled Amount by Milestone" icon={<IndianRupee size={15}/>} color={C.brownLt} delay={0.2} wide>
               <ResponsiveContainer width="100%" height={320}>
-                <BarChart data={dashData.top_unbilled_amount} layout="vertical" margin={{top:5,right:95,left:8,bottom:5}}>
+                <BarChart data={dash.top_unbilled_amount} layout="vertical" margin={{top:5,right:95,left:8,bottom:5}}>
                   <defs>
                     <linearGradient id="gUnbilledAmt" x1="0" y1="0" x2="1" y2="0">
                       <stop offset="0%"   stopColor={GRADIENTS.demand[0]} stopOpacity={0.9}/>
@@ -757,9 +769,9 @@ export default function Dashboard() {
           </div>
           <div className="section-hd">
             <h2>Milestone Summary Table</h2>
-            <span className="badge">{sortedMs.length} milestones · paginated</span>
+            <span className="badge">{dash.milestone_list.length} milestones · paginated</span>
           </div>
-          <MsTable rows={sortedMs}/>
+          <MsTable rows={dash.milestone_list}/>
         </div>
       )}
 
@@ -767,7 +779,7 @@ export default function Dashboard() {
       {tab==='towers' && (
         <div className="tab-content">
           <div className="tower-cards">
-            {dashData.tower_list.map((t,i)=>{
+            {dash.tower_list.map((t,i)=>{
               const base = GRADIENTS[TOWER_GRAD[i%TOWER_GRAD.length]];
               return (
                 <div key={i} className="tc" style={{'--tc-color':base[0],animationDelay:`${i*0.07}s`}}>
@@ -805,15 +817,15 @@ export default function Dashboard() {
             <GlassCard title="Outstanding by Tower" icon={<PieIcon size={15}/>} color={C.rose} delay={0.3}>
               <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
-                  <Pie data={dashData.tower_list} cx="50%" cy="48%" outerRadius={100} innerRadius={45}
+                  <Pie data={dash.tower_list} cx="50%" cy="48%" outerRadius={100} innerRadius={45}
                     dataKey="outstanding" nameKey="tower" paddingAngle={4} stroke="#fff" strokeWidth={2} animationDuration={1200}
                     label={({tower,outstanding})=>`${tower}: ₹${outstanding}Crs`}>
-                    {dashData.tower_list.map((_,i)=><Cell key={i} fill={GRADIENTS[TOWER_GRAD[i%TOWER_GRAD.length]][0]}/>)}
+                    {dash.tower_list.map((_,i)=><Cell key={i} fill={GRADIENTS[TOWER_GRAD[i%TOWER_GRAD.length]][0]}/>)}
                   </Pie>
                   <Tooltip contentStyle={TT_STYLE} formatter={(v,n)=>[`₹${v} Crs`,n]}/>
                 </PieChart>
               </ResponsiveContainer>
-              <ChartLegend items={dashData.tower_list.map((t,i)=>({label:t.tower,color:GRADIENTS[TOWER_GRAD[i%TOWER_GRAD.length]][0]}))}/>
+              <ChartLegend items={dash.tower_list.map((t,i)=>({label:t.tower,color:GRADIENTS[TOWER_GRAD[i%TOWER_GRAD.length]][0]}))}/>
             </GlassCard>
           </div>
         </div>
