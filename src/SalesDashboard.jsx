@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
+import ReactDOM from 'react-dom';
 import * as XLSX from 'xlsx';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
@@ -303,21 +304,41 @@ function KPI3D({ icon, label, value, sub, color, delay=0, ring }) {
 
 /* ── Billed/Unbilled card with FIXED z-index popup ── */
 function BilledCard({ type, count, color, delay, onClick, previewRows }) {
-  const [hov, setHov] = useState(false);
+  const [hov, setHov]         = useState(false);
   const [showPrev, setShowPrev] = useState(false);
-  const timerRef = useRef(null);
-  const isBilled = type === 'billed';
-  const label    = isBilled ? 'BILLED'   : 'UNBILLED';
-  const sub      = isBilled ? 'Invoices raised' : 'Pending invoicing';
-  const icon     = isBilled ? '🧾' : '🔔';
-  const countKey = isBilled ? 'billed_count'  : 'unbilled_count';
-  const amtKey   = isBilled ? 'billed_amount' : 'unbilled_amount';
+  const [popupPos, setPopupPos] = useState({ top:0, left:0 });
+  const timerRef  = useRef(null);
+  const cardRef   = useRef(null);
+  const isBilled  = type === 'billed';
+  const label     = isBilled ? 'BILLED'   : 'UNBILLED';
+  const sub       = isBilled ? 'Invoices raised' : 'Pending invoicing';
+  const icon      = isBilled ? '🧾' : '🔔';
+  const countKey  = isBilled ? 'billed_count'  : 'unbilled_count';
+  const amtKey    = isBilled ? 'billed_amount' : 'unbilled_amount';
+
+  const handleEnter = () => {
+    setHov(true);
+    timerRef.current = setTimeout(() => {
+      if (cardRef.current) {
+        const r = cardRef.current.getBoundingClientRect();
+        // Position above the card; shift left to centre the 360px popup
+        setPopupPos({
+          top:  r.top - 8,          // will be translated up by popup itself
+          left: r.left + r.width/2, // centred horizontally on card
+        });
+      }
+      setShowPrev(true);
+    }, 280);
+  };
+  const handleLeave = () => {
+    setHov(false);
+    clearTimeout(timerRef.current);
+    setShowPrev(false);
+  };
 
   return (
-    /* position:static so popup can escape via fixed positioning */
-    <div style={{ animationDelay:`${delay*0.08}s`, position:'relative' }}
-      onMouseEnter={() => { setHov(true); timerRef.current = setTimeout(()=>setShowPrev(true),300); }}
-      onMouseLeave={() => { setHov(false); clearTimeout(timerRef.current); setShowPrev(false); }}>
+    <div ref={cardRef} style={{ animationDelay:`${delay*0.08}s` }}
+      onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
 
       <div onClick={onClick} style={{
         background:'var(--bg-glass)', backdropFilter:'blur(20px)',
@@ -340,23 +361,29 @@ function BilledCard({ type, count, color, delay, onClick, previewRows }) {
         </div>
       </div>
 
-      {/* Popup — fixed position so it escapes any overflow:hidden parent */}
-      {showPrev && previewRows.length > 0 && (
-        <PopupTable rows={previewRows} color={color} label={label} countKey={countKey} amtKey={amtKey}/>
+      {/* Portal: renders into document.body — escapes ALL overflow:hidden ancestors */}
+      {showPrev && previewRows.length > 0 && ReactDOM.createPortal(
+        <PopupTable rows={previewRows} color={color} label={label}
+          countKey={countKey} amtKey={amtKey} pos={popupPos}/>,
+        document.body
       )}
     </div>
   );
 }
 
-/* Renders popup via portal-like fixed positioning */
-function PopupTable({ rows, color, label, countKey, amtKey }) {
+/* Fixed-position popup rendered via portal into document.body */
+function PopupTable({ rows, color, label, countKey, amtKey, pos }) {
   return (
     <div style={{
-      position:'absolute', top:'calc(100% + 10px)', left:'50%', transform:'translateX(-50%)',
-      width:360, background:'rgba(255,255,255,0.99)',
+      position:'fixed',
+      top:  pos.top,
+      left: pos.left,
+      transform:'translate(-50%, -100%) translateY(-12px)', // above the card, centred
+      width:360,
+      background:'rgba(255,255,255,0.99)',
       border:`1.5px solid ${color}40`, borderRadius:14,
-      boxShadow:`0 24px 60px rgba(0,0,0,0.25)`,
-      zIndex:99999,   /* always on top */
+      boxShadow:`0 24px 60px rgba(0,0,0,0.28)`,
+      zIndex:999999,
       overflow:'hidden', pointerEvents:'none',
     }}>
       <div style={{ padding:'10px 14px', background:`linear-gradient(135deg,${color},${color}bb)`, color:'#fff' }}>
