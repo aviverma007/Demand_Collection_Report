@@ -771,49 +771,44 @@ export default function Dashboard() {
               <ChartLegend items={[{label:'Billed',color:C.blue},{label:'Unbilled',color:C.brownLt}]}/>
             </GlassCard>
 
-            {/* Tower collection rate by PROJECT — scrollable */}
-            <GlassCard title="Tower Collection Rate" icon={<BarChart3 size={15}/>} color={C.blue} delay={0.2} wide>
-              <div style={{display:'flex',flexDirection:'column',gap:12,paddingTop:2}}>
+            {/* Tower collection rate — one color per project */}
+            <GlassCard title="Tower Collection Rate" icon={<BarChart3 size={15}/>} color={C.blue} delay={0.2}>
+              <div style={{display:'flex',flexDirection:'column',gap:14,paddingTop:2}}>
                 {Object.entries(towersByProject).map(([proj, ptowers], pi) => {
-                  const g = GRADIENTS[TOWER_GRAD[pi % TOWER_GRAD.length]];
+                  // One solid color per project
+                  const projColor = GRADIENTS[TOWER_GRAD[pi % TOWER_GRAD.length]][0];
+                  const projColorFade = GRADIENTS[TOWER_GRAD[pi % TOWER_GRAD.length]][1];
                   const maxRate = Math.max(...ptowers.map(t=>t.collection_rate), 1);
                   return (
                     <div key={proj}>
                       {/* Project label */}
-                      <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:6}}>
-                        <div style={{width:3,height:11,borderRadius:2,background:`linear-gradient(180deg,${g[0]},${g[1]})`}}/>
-                        <span style={{fontSize:10,fontWeight:700,color:C.blue,letterSpacing:0.2}}>{proj}</span>
+                      <div style={{display:'flex',alignItems:'center',gap:6,marginBottom:7}}>
+                        <div style={{width:8,height:8,borderRadius:'50%',background:projColor,flexShrink:0}}/>
+                        <span style={{fontSize:10,fontWeight:700,color:C.text,letterSpacing:0.2}}>{proj}</span>
                         <div style={{flex:1,height:1,background:'rgba(30,58,95,0.07)'}}/>
-                        <span style={{fontSize:9,color:C.text3}}>{ptowers.length} towers</span>
+                        <span style={{fontSize:9,color:C.text3,fontWeight:600}}>{ptowers.length}T</span>
                       </div>
-                      {/* Compact rows */}
+                      {/* Bars — all same color as project */}
                       <div style={{display:'flex',flexDirection:'column',gap:4}}>
-                        {ptowers.map((t, i) => {
-                          const barColor = GRADIENTS[TOWER_GRAD[(pi*7+i) % TOWER_GRAD.length]];
+                        {ptowers.map((t) => {
                           const pct = Math.min(t.collection_rate / maxRate * 100, 100);
                           const isHigh = t.collection_rate >= 100;
                           return (
-                            <div key={t.tower} style={{display:'flex',alignItems:'center',gap:8}}>
-                              <div style={{width:48,flexShrink:0,fontSize:10,fontWeight:700,color:C.text2,textAlign:'right'}}>{t.tower}</div>
-                              <div style={{flex:1,height:16,background:'rgba(30,58,95,0.05)',borderRadius:4,overflow:'hidden',position:'relative'}}>
+                            <div key={t.tower} style={{display:'flex',alignItems:'center',gap:7}}>
+                              <div style={{width:40,flexShrink:0,fontSize:9,fontWeight:700,color:C.text3,textAlign:'right'}}>{t.tower}</div>
+                              <div style={{flex:1,height:14,background:`${projColor}12`,borderRadius:3,overflow:'hidden',position:'relative'}}>
                                 <div style={{
                                   height:'100%',width:`${pct}%`,
-                                  background:`linear-gradient(90deg,${barColor[0]},${barColor[1]})`,
-                                  borderRadius:4,display:'flex',alignItems:'center',justifyContent:'flex-end',paddingRight:5,
+                                  background:`linear-gradient(90deg,${projColor},${projColorFade})`,
+                                  borderRadius:3,display:'flex',alignItems:'center',justifyContent:'flex-end',paddingRight:4,
                                 }}>
-                                  {pct > 22 && <span style={{fontSize:9,fontWeight:700,color:'rgba(255,255,255,0.95)'}}>{t.collection_rate}%</span>}
+                                  {pct > 20 && <span style={{fontSize:9,fontWeight:700,color:'rgba(255,255,255,0.9)'}}>{t.collection_rate}%</span>}
                                 </div>
-                                {pct <= 22 && (
-                                  <span style={{position:'absolute',left:`${pct}%`,top:'50%',transform:'translateY(-50%)',paddingLeft:4,fontSize:9,fontWeight:700,color:barColor[0]}}>{t.collection_rate}%</span>
+                                {pct <= 20 && (
+                                  <span style={{position:'absolute',left:`${pct+2}%`,top:'50%',transform:'translateY(-50%)',fontSize:9,fontWeight:700,color:projColor}}>{t.collection_rate}%</span>
                                 )}
                               </div>
-                              <div style={{
-                                width:28,flexShrink:0,textAlign:'center',fontSize:8,fontWeight:700,
-                                padding:'1px 3px',borderRadius:3,
-                                background:isHigh?`${C.green}15`:`${C.gold}12`,
-                                color:isHigh?C.green:C.gold,
-                                border:`1px solid ${isHigh?C.green:C.gold}25`,
-                              }}>{isHigh?'✓':'~'}</div>
+                              <span style={{fontSize:8,color:isHigh?C.green:C.text3,fontWeight:700,width:14,textAlign:'center'}}>{isHigh?'✓':''}</span>
                             </div>
                           );
                         })}
@@ -821,10 +816,6 @@ export default function Dashboard() {
                     </div>
                   );
                 })}
-              </div>
-              <div style={{display:'flex',alignItems:'center',gap:14,paddingTop:10,marginTop:6,borderTop:'1px solid rgba(30,58,95,0.07)',fontSize:9,color:C.text3}}>
-                <span style={{display:'flex',alignItems:'center',gap:3}}><span style={{color:C.green}}>✓</span> ≥100% collected</span>
-                <span style={{display:'flex',alignItems:'center',gap:3}}><span style={{color:C.gold}}>~</span> &lt;100% collected</span>
               </div>
             </GlassCard>
 
