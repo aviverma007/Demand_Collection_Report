@@ -28,3 +28,5 @@ npm-debug.log*
 # Excel source (large binary)
 *.XLSX
 *.xlsx
+dapp_final.xlsx
+*.XLSX
