@@ -1,34 +1,55 @@
-# Smartworld Sky Arc — Sales & Payment Dashboard
+# Smartworld Sky Arc — Demand & Collection Dashboard
 
-Professional real estate demand & collection analytics dashboard for Smartworld Sky Arc project.
+## Folder Structure
 
-## Features
-- **Ageing Analysis** – Buckets: 1–30 / 31–90 / 91–180 / 181+ days (DAX formula)
-- **Unbilled Milestones** – Count & amount by milestone (Demand No = blank)
-- **12+ Charts** – Area, Bar, Pie, Radar, Composed, Horizontal Bar
-- **Tower Breakdown** – Demand, Received, Outstanding, Collection Rate
-- **Paginated Milestone Table** – All 213 milestones with ageing badges
-- **Tab Navigation** – Overview · Ageing · Milestones · Towers
-- **3D Card Effects** – Perspective hover animations throughout
-
-## Quick Start
-```bash
-npm install
-npm run dev        # http://localhost:5173
-npm run build      # production build
+```
+Demand_Collection_Report/
+├── data/
+│   └── dapp_final.xlsx        ← YOUR EXCEL FILE — edit this to update the dashboard
+├── scripts/
+│   └── excel_to_json.py       ← run this after editing Excel
+├── src/
+│   ├── dashboardData.json     ← auto-generated from Excel (do not edit manually)
+│   ├── SalesDashboard.jsx
+│   └── SalesDashboard.css
+└── package.json
 ```
 
-## Key Metrics
-| Metric | Value |
-|---|---|
-| Total Units | 893 |
-| Sales Orders | 893 |
-| Total Demand | ₹1,574.34 Cr |
-| Received | ₹1,081.90 Cr |
-| Outstanding | ₹492.44 Cr |
-| Collection Rate | 68.77% |
-| Billed | 3,496 |
-| Unbilled | 8,582 |
+---
+
+## How to Update Dashboard Data
+
+**Step 1 — Edit the Excel file**
+Open `data/dapp_final.xlsx` in Excel, make your changes, save and close.
+
+**Step 2 — Regenerate the JSON**
+```bash
+python scripts/excel_to_json.py
+```
+
+**Step 3 — Rebuild the app**
+```bash
+npm run build
+```
+
+**Step 4 — Commit and push**
+```bash
+git add data/dapp_final.xlsx src/dashboardData.json
+git commit -m "Update data"
+git push
+```
+
+That's it — the dashboard will reflect your latest Excel data.
+
+---
+
+## Run Locally
+
+```bash
+npm install
+npm run dev
+# open http://localhost:5173
+```
 
 ## Tech Stack
-React 19 · Vite · Recharts · Outfit + Space Mono fonts · CSS3 3D transforms
+React 19 · Vite · Recharts · Lucide Icons

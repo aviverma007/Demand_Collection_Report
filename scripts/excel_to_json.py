@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 from datetime import datetime
 
-EXCEL_PATH = Path(__file__).parent.parent / "data" / "dapp_final.xlsx"
+EXCEL_PATH = Path(__file__).parent.parent / "data" / "dapp_final.xlsx"   # ← update this file to refresh the dashboard
 OUTPUT_PATH = Path(__file__).parent.parent / "src" / "dashboardData.json"
 CR = 1_00_00_000  # 1 Crore = 10,000,000
 
