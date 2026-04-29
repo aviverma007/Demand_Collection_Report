@@ -772,32 +772,70 @@ export default function Dashboard() {
             </GlassCard>
 
             {/* Tower collection rate by PROJECT — scrollable */}
-            <GlassCard title="Tower Collection Rate (by Project)" icon={<BarChart3 size={15}/>} color={C.blue} delay={0.2} wide>
-              {Object.entries(towersByProject).map(([proj, ptowers], pi) => {
-                const g = GRADIENTS[TOWER_GRAD[pi % TOWER_GRAD.length]];
-                const chartData = ptowers.map(t=>({ name:t.tower, rate:t.collection_rate }));
-                return (
-                  <div key={proj} style={{marginBottom:20}}>
-                    <div style={{fontSize:11,fontWeight:700,color:C.text2,marginBottom:6,paddingLeft:4,borderLeft:`3px solid ${g[0]}`,paddingLeft:8}}>{proj}</div>
-                    <div style={{overflowX:'auto',paddingBottom:4}}>
-                      <div style={{minWidth:Math.max(ptowers.length*90,300)}}>
-                        <ResponsiveContainer width="100%" height={180}>
-                          <BarChart data={chartData} margin={{top:24,right:10,left:0,bottom:0}}>
-                            <CartesianGrid strokeDasharray="4 4" stroke="rgba(30,58,95,0.07)" vertical={false}/>
-                            <XAxis dataKey="name" tick={{fill:C.text3,fontSize:11,fontWeight:700}} axisLine={false} tickLine={false}/>
-                            <YAxis domain={[0,Math.max(120,...chartData.map(t=>t.rate))]} unit="%" tick={{fill:C.text3,fontSize:10}} axisLine={false} tickLine={false}/>
-                            <Tooltip contentStyle={TT_STYLE} formatter={v=>[`${v}%`,'Collection Rate']}/>
-                            <Bar dataKey="rate" name="Collection Rate %" radius={[8,8,0,0]} barSize={50} animationDuration={1400}>
-                              {chartData.map((_,i)=><Cell key={i} fill={`url(#grad-tower-${(pi*10+i)%TOWER_GRAD.length})`}/>)}
-                              <LabelList dataKey="rate" position="top" formatter={v=>`${v}%`} style={{fontSize:11,fontWeight:700,fill:C.text}}/>
-                            </Bar>
-                          </BarChart>
-                        </ResponsiveContainer>
+            <GlassCard title="Tower Collection Rate" icon={<BarChart3 size={15}/>} color={C.blue} delay={0.2} wide>
+              <div style={{display:'flex',flexDirection:'column',gap:18,paddingTop:4}}>
+                {Object.entries(towersByProject).map(([proj, ptowers], pi) => {
+                  const g = GRADIENTS[TOWER_GRAD[pi % TOWER_GRAD.length]];
+                  const maxRate = Math.max(...ptowers.map(t=>t.collection_rate), 1);
+                  return (
+                    <div key={proj}>
+                      {/* Project label */}
+                      <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10}}>
+                        <div style={{width:3,height:14,borderRadius:2,background:`linear-gradient(180deg,${g[0]},${g[1]})`}}/>
+                        <span style={{fontSize:11,fontWeight:700,color:C.blue,letterSpacing:0.3}}>{proj}</span>
+                        <div style={{flex:1,height:1,background:'rgba(30,58,95,0.08)'}}/>
+                        <span style={{fontSize:10,color:C.text3}}>{ptowers.length} towers</span>
+                      </div>
+                      {/* Compact horizontal bars */}
+                      <div style={{display:'flex',flexDirection:'column',gap:6}}>
+                        {ptowers.map((t, i) => {
+                          const barColor = GRADIENTS[TOWER_GRAD[(pi*7+i) % TOWER_GRAD.length]];
+                          const pct = Math.min(t.collection_rate / maxRate * 100, 100);
+                          const isHigh = t.collection_rate >= 100;
+                          return (
+                            <div key={t.tower} style={{display:'flex',alignItems:'center',gap:10}}>
+                              {/* Tower name */}
+                              <div style={{width:58,flexShrink:0,fontSize:11,fontWeight:700,color:C.text2,textAlign:'right'}}>{t.tower}</div>
+                              {/* Bar track */}
+                              <div style={{flex:1,height:22,background:'rgba(30,58,95,0.05)',borderRadius:6,overflow:'hidden',position:'relative'}}>
+                                <div style={{
+                                  height:'100%', width:`${pct}%`,
+                                  background:`linear-gradient(90deg,${barColor[0]},${barColor[1]})`,
+                                  borderRadius:6,
+                                  transition:'width 0.8s cubic-bezier(0.4,0,0.2,1)',
+                                  display:'flex',alignItems:'center',justifyContent:'flex-end',paddingRight:8,
+                                }}>
+                                  {pct > 25 && (
+                                    <span style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,0.95)'}}>{t.collection_rate}%</span>
+                                  )}
+                                </div>
+                                {pct <= 25 && (
+                                  <span style={{position:'absolute',left:`${pct}%`,top:'50%',transform:'translateY(-50%)',paddingLeft:6,fontSize:10,fontWeight:700,color:barColor[0]}}>{t.collection_rate}%</span>
+                                )}
+                              </div>
+                              {/* Badge */}
+                              <div style={{
+                                width:36,flexShrink:0,textAlign:'center',fontSize:9,fontWeight:700,
+                                padding:'2px 4px',borderRadius:4,
+                                background: isHigh ? `${C.green}18` : `${C.gold}15`,
+                                color: isHigh ? C.green : C.gold,
+                                border: `1px solid ${isHigh ? C.green : C.gold}30`,
+                              }}>
+                                {isHigh ? '✓' : '~'}
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+              {/* Legend */}
+              <div style={{display:'flex',alignItems:'center',gap:16,paddingTop:14,marginTop:8,borderTop:'1px solid rgba(30,58,95,0.08)',fontSize:10,color:C.text3}}>
+                <span style={{display:'flex',alignItems:'center',gap:4}}><span style={{fontSize:12,color:C.green}}>✓</span> ≥ 100% collected</span>
+                <span style={{display:'flex',alignItems:'center',gap:4}}><span style={{fontSize:12,color:C.gold}}>~</span> &lt; 100% collected</span>
+              </div>
             </GlassCard>
 
           </div>
